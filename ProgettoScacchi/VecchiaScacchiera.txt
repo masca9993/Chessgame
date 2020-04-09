@@ -1,0 +1,40 @@
+#include "scacchiera.h"
+
+Scacchiera::Scacchiera()
+{
+  board.push_back(new Torre(1, 0, this));
+  board.push_back(new Cavallo(1, 1, this));
+  board.push_back(new Alfiere(1, 2, this));
+  board.push_back(new Regina(1, 3, this));
+  board.push_back(new Re(1, 4, this));
+  board.push_back(new Alfiere(1, 5, this));
+  board.push_back(new Cavallo(1, 6, this));
+  board.push_back(new Torre(1, 7, this));
+  for (int i=0; i<8; i++)
+  board.push_back(new Pedone(1, 8+i, this));
+  for (int i=0; i<32; i++)
+  board.push_back(nullptr);
+  for (int i=0; i<8; i++)
+  board.push_back(new Pedone(0, 48+i, this));
+  board.push_back(new Torre(0, 56, this));
+  board.push_back(new Cavallo(0, 57, this));
+  board.push_back(new Alfiere(0, 58, this));
+  board.push_back(new Regina(0, 59, this));
+  board.push_back(new Re(0, 60, this));
+  board.push_back(new Alfiere(0, 61, this));
+  board.push_back(new Cavallo(0, 62, this));
+  board.push_back(new Torre(0, 63, this));
+}
+
+giocatore Scacchiera::getStato(int pos) const
+{
+  if (board[pos])
+  {
+      if (board[pos]->getColore()==1)
+          return bianco;
+      else
+          return nero;
+  }
+  else
+     return none;
+}
