@@ -53,7 +53,7 @@ std::vector<int> mosseacroce::move() const
     {
         if (parent->getStato(pos-i)==none)
             mossepossibili.push_back(pos-i);
-        else if (parent->getStato(pos-i)==nero)
+        else if (parent->getStato(pos-i)==bianco)
         {
             break;
         }
