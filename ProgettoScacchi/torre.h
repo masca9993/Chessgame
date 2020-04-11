@@ -6,9 +6,10 @@
 class Torre : public mosseacroce
 {
 public:
-    Torre(bool c, int p, Scacchiera* parent);
+    Torre(bool c, int p, Scacchiera* parent, bool m=false);
+    bool hasmoved() const;
 private:
-    void setPos(int posizione);
+    bool moved;
 };
 
 #endif // TORRE_H
