@@ -6,7 +6,7 @@ Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent)
 std::vector<int> Re::move() const
 {
  std::vector<int> mossepossibili;
- if (colore)
+ if (!colore)
  {
  if (pos==0) //sono in basso a sinistra
   {
@@ -216,7 +216,7 @@ std::vector<int> Re::move() const
      }
 
  }
- if (colore)
+ if (!colore)
  {
      Torre* t=dynamic_cast<Torre*>(parent->getPedina(0));
      if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra

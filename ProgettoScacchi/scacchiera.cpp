@@ -8,7 +8,7 @@
 
 
 Scacchiera::Scacchiera()
-{
+{/*
   board.push_back(new Torre(0, 0, this));
   board.push_back(new Cavallo(0, 1, this));
   board.push_back(new Alfiere(0, 2, this));
@@ -30,20 +30,15 @@ Scacchiera::Scacchiera()
   board.push_back(new Re(1, 60, this));
   board.push_back(new Alfiere(1, 61, this));
   board.push_back(new Cavallo(1, 62, this));
-  board.push_back(new Torre(1, 63, this));
+  board.push_back(new Torre(1, 63, this));*/
 
-  /*board.resize(64);
+  board.resize(64);
   for (unsigned int i=0; i<64; i++)
       board[i]=nullptr;
-  board[0]=new Torre(0, 0, this);
-  board[3]=new Regina(0, 3, this);
-  board[4]=new Re(0, 4, this);
-  board[7]=new Torre(0, 7, this);
-  board[29]=new Regina(1, 29, this);
-  std::vector<int> v;
-  v=board[4]->move();
-  for (unsigned int  i=0; i<v.size(); i++)
-      std::cout<<v[i]<<' ';*/
+  //board[0]=new Torre(0, 0, this);
+  //board[3]=new Regina(0, 3, this);
+  //board[4]=new Re(0, 4, this);
+  //board[7]=new Torre(0, 7, this);
 }
 
 giocatore Scacchiera::getStato(int pos) const
