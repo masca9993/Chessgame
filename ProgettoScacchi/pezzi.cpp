@@ -11,3 +11,12 @@ int Pezzi::getPosizione() const
 {
     return pos;
 }
+
+void Pezzi::domove(int p)
+{
+    if(parent->doMove(pos,p)){
+        pos=p;
+    }
+//    else
+//        throw exc;
+}

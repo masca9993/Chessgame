@@ -9,9 +9,9 @@ public:
     Re(bool c, int p, Scacchiera* parent, bool ch=false, bool m=false);
     std::vector<int> move() const;
     bool hasmoved() const;
-    bool check=false;
+    bool check;
     private:
-    bool moved=false;
+    bool moved;
 };
 
 #endif // RE_H

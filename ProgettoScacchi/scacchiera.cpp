@@ -32,9 +32,9 @@ Scacchiera::Scacchiera()
   board.push_back(new Cavallo(1, 62, this));
   board.push_back(new Torre(1, 63, this));*/
 
-  board.resize(64);
+  //board.resize(64);
   for (unsigned int i=0; i<64; i++)
-      board[i]=nullptr;
+      board.push_back(nullptr);
   //board[0]=new Torre(0, 0, this);
   //board[3]=new Regina(0, 3, this);
   //board[4]=new Re(0, 4, this);
@@ -62,7 +62,7 @@ Pezzi* Scacchiera::getPedina(int pos) const
 bool Scacchiera::Check(int re_pos, bool colore) const
 {
     bool check=false;
-    if (!colore)   // re bianco
+    if (colore)   // re bianco
     {
         for (unsigned int i=0; i<board.size() && !check; i++)
         {
@@ -74,6 +74,7 @@ bool Scacchiera::Check(int re_pos, bool colore) const
               {
                   if (mosse_nero[i]==re_pos)
                       check=true;
+                  //winner(re_pos,colore)
               }
           }
         }
@@ -97,9 +98,45 @@ bool Scacchiera::Check(int re_pos, bool colore) const
     return check;
 }
 
-void Scacchiera::doMove()
+bool Scacchiera::doMove(int pos1, int pos2)
 {
+    if(board[pos1]){
+        std::vector<int> v=board[pos1]->move();
+        bool check=false;
+        for(unsigned int i=0; i<v.size();i++){
+            if(v[i]==pos2){
+                if(board[pos2])
+                    delete board[pos2];
+                board[pos2]=board[pos1];
+                board[pos1]=nullptr;
+                check=true;
+                break;
+            }
+        }
+    return check;
+    }
+}
 
+giocatore Scacchiera::winner(int pos,bool colore) const
+{
+    bool winner=true;
+    if(colore){
+        if(board[pos]->move().size()!=0)
+            winner=false;
+        else{
+            std::vector<int> mossepossibili;
+            for(std::vector<Pezzi*>::const_iterator it=board.begin(); it!=board.end(); it++){
+                if(it && (*it)->getColore()){
+//                    mossepossibili=(*it)->move();
+//                    for(int i=0; i<mossepossibili.size(); i++)
+                    mossepossibili.insert(mossepossibili.end(),(*it)->move().begin(),(*it)->move().end())
+                }
+            }
+            for(int i=0; i<mossepossibili.size(); i++){
+
+            }
+        }
+    }
 }
 
 
