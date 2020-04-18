@@ -47,5 +47,18 @@ std::vector<int> Pedone::move() const
                 mossepossibili.push_back(pos-9);
         }
     }
-return mossepossibili;
+    return mossepossibili;
+}
+
+Pedone *Pedone::clone() const
+{
+    return new Pedone(colore,pos,parent,firstmove);
+}
+
+void Pedone::domove(int p)
+{
+    if(parent->doMove(pos,p)){
+        pos=p;
+        firstmove=true;
+    }
 }
