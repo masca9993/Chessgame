@@ -8,7 +8,8 @@
 
 
 Scacchiera::Scacchiera()
-{/*
+{
+    /*
   board.push_back(new Torre(0, 0, this));
   board.push_back(new Cavallo(0, 1, this));
   board.push_back(new Alfiere(0, 2, this));
@@ -32,20 +33,40 @@ Scacchiera::Scacchiera()
   board.push_back(new Cavallo(1, 62, this));
   board.push_back(new Torre(1, 63, this));*/
 
-  //board.resize(64);
-  for (unsigned int i=0; i<64; i++)
-      board.push_back(nullptr);
-  //board[0]=new Torre(0, 0, this);
-  //board[3]=new Regina(0, 3, this);
-  //board[4]=new Re(0, 4, this);
-  //board[7]=new Torre(0, 7, this);
+for (int i=0; i<64; i++)
+    board.push_back(nullptr);
+
+  board[0]=new Re(1, 0, this, true, true);
+  //board[3]=new Regina(1, 3, this);
+  board[1]=new Torre(1, 1, this, true);
+  board[16]=new Torre(0, 16, this, true);
+  board[17]=new Torre(0, 17, this, true);
+  std::vector<int> v=board[0]->move();
+  for (unsigned int i=0; i<v.size(); i++)
+      std::cout<<v[i];
+  //board[12]=new Cavallo(0, 12, this);
+  //board[57]=new Torre(1, 57, this, true);
+  //board[15]=new Torre(0, 15, this);
+}
+
+Scacchiera::Scacchiera(const Scacchiera &s)
+{
+    for (int i=0; i<64; i++)
+    {
+        board.push_back(nullptr);    //inizializzo ogni casella a nullptr
+        if (s.board[i])     // se nella scacchiera da copiare allora copio lo stesso pezzo in this
+        {
+            board[i]=s.board[i]->clone();
+            board[i]->setParent(this);
+        }
+    }
 }
 
 giocatore Scacchiera::getStato(int pos) const
 {
   if (board[pos])
   {
-      if (!board[pos]->getColore())
+      if (board[pos]->getColore())
           return bianco;
       else
           return nero;
@@ -59,6 +80,36 @@ Pezzi* Scacchiera::getPedina(int pos) const
     return board[pos];
 }
 
+Scacchiera::~Scacchiera()
+{
+    for (int i=0; i<64; i++)
+    {
+        delete board[i];
+    }
+}
+
+bool Scacchiera::W(bool p) const  //funzione che verifica se c'è uno scacco al giocatore p
+{
+    int re_pos;
+  for (unsigned int i=0; i<64; i++)
+  {
+     if (board[i] && board[i]->getColore()==p && dynamic_cast<Re*>(board[i])!=nullptr)  //cerco il re
+     re_pos=i;
+  }
+  std::vector<int> v;
+  if (p)          //salvo tutte le mosse possibili dell'avversario
+  v=Mosse(0);
+   else
+   v=Mosse(1);
+
+  for (unsigned int i=0; i<v.size(); i++)   //se nelle mosse possibili dell'avversario c'è la posizione del re allora ritorno vero
+  {
+      if (v[i]==re_pos)
+          return true;
+  }
+   return false;    //se esco dal ciclo senza ritornare nulla allora ritorno falso
+}
+
 bool Scacchiera::Check(int re_pos, bool colore) const
 {
     bool check=false;
@@ -68,13 +119,11 @@ bool Scacchiera::Check(int re_pos, bool colore) const
         {
           if (this->getStato(i)==nero)
           {
-              std::vector<int> mosse_nero;
-              mosse_nero=board[i]->move();
-              for (unsigned int i=0; i<board.size() && !check; i++)
+              std::vector<int> mosse_nero=board[i]->move();
+              for (unsigned int i=0; i<mosse_nero.size() && !check; i++)
               {
                   if (mosse_nero[i]==re_pos)
                       check=true;
-                  //winner(re_pos,colore)
               }
           }
         }
@@ -85,9 +134,8 @@ bool Scacchiera::Check(int re_pos, bool colore) const
         {
           if (this->getStato(i)==bianco)
           {
-              std::vector<int> mosse_bianco;
-              mosse_bianco=board[i]->move();
-              for (unsigned int i=0; i<board.size() && !check; i++)
+              std::vector<int> mosse_bianco=board[i]->move();
+              for (unsigned int i=0; i<mosse_bianco.size() && !check; i++)
               {
                   if (mosse_bianco[i]==re_pos)
                       check=true;
@@ -98,45 +146,68 @@ bool Scacchiera::Check(int re_pos, bool colore) const
     return check;
 }
 
-bool Scacchiera::doMove(int pos1, int pos2)
+std::vector<int> Scacchiera::Mosse(bool g) const
 {
-    if(board[pos1]){
-        std::vector<int> v=board[pos1]->move();
-        bool check=false;
-        for(unsigned int i=0; i<v.size();i++){
-            if(v[i]==pos2){
-                if(board[pos2])
-                    delete board[pos2];
-                board[pos2]=board[pos1];
-                board[pos1]=nullptr;
-                check=true;
-                break;
-            }
+    std::vector<int> mossetot;
+    for (int i=0; i<64; i++)
+    {
+        if (board[i] && board[i]->getColore()==g)
+        {
+            std::vector<int> t;
+            t=board[i]->move();
+            mossetot.insert(mossetot.end(), t.begin(), t.end());
         }
-    return check;
     }
+    return mossetot;
 }
 
-giocatore Scacchiera::winner(int pos,bool colore) const
+giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
 {
-    bool winner=true;
-    if(colore){
-        if(board[pos]->move().size()!=0)
-            winner=false;
-        else{
-            std::vector<int> mossepossibili;
-            for(std::vector<Pezzi*>::const_iterator it=board.begin(); it!=board.end(); it++){
-                if(it && (*it)->getColore()){
-//                    mossepossibili=(*it)->move();
-//                    for(int i=0; i<mossepossibili.size(); i++)
-                    mossepossibili.insert(mossepossibili.end(),(*it)->move().begin(),(*it)->move().end())
-                }
-            }
-            for(int i=0; i<mossepossibili.size(); i++){
-
-            }
-        }
+  if (p) // re bianco
+  {
+       for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
+        {
+         if (board[j] && board[j]->getColore())
+          {
+             std::vector<int> mossebianco=board[j]->move();
+         for (unsigned int i=0; i<mossebianco.size(); i++)
+         {
+            Scacchiera* prova=new Scacchiera(*this);
+            prova->board[j]->domove(mossebianco[i]);
+            if(!prova->W(p))
+            return none;
+         }
+         }
     }
+        return nero;
+  }
+  else
+  {
+      for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
+       {
+        if (board[j] && !board[j]->getColore())
+         {
+            std::vector<int> mossenero=board[j]->move();
+        for (unsigned int i=0; i<mossenero.size(); i++)
+        {
+           Scacchiera* prova=new Scacchiera(*this);
+           prova->board[j]->domove(mossenero[i]);
+           if(!prova->W(p))
+           return none;
+        }
+        }
+   }
+       return bianco;
+  }
+}
+
+bool Scacchiera::doMove(int pos1, int pos2)
+{
+        if(board[pos2])
+         delete board[pos2];
+          board[pos2]=board[pos1];
+          board[pos1]=nullptr;
+    return true;
 }
 
 
