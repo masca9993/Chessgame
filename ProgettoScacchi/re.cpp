@@ -2,26 +2,26 @@
 #include "torre.h"
 Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent), check(ch), moved(m)
 {}
-
 std::vector<int> Re::move() const
+
 {
  std::vector<int> mossepossibili;
- if (!colore)
+ if (colore)
  {
  if (pos==0) //sono in basso a sinistra
   {
      if (parent->getStato(pos+8)!=bianco)
      mossepossibili.push_back(pos+8); //vado in alto
-     if (parent->getStato(pos+8+1)!=bianco)
+     if (parent->getStato(pos+8+1)!=bianco )
      mossepossibili.push_back(pos+8+1); //vado in alto a destra
-     if (parent->getStato(pos+1)!=bianco)
+     if (parent->getStato(pos+1)!=bianco )
      mossepossibili.push_back(pos+1);  //vado a destra
   }
  else if(pos==7)  // basso a destra
   {
-     if (parent->getStato(pos+8)!=bianco)
+     if (parent->getStato(pos+8)!=bianco )
      mossepossibili.push_back(pos+8); //vado in alto
-     if (parent->getStato(pos+8-1)!=bianco)
+     if (parent->getStato(pos+8-1)!=bianco )
      mossepossibili.push_back(pos+8-1); //vado in alto a sinistra
      if (parent->getStato(pos-1)!=bianco)
      mossepossibili.push_back(pos-1);  //vado a sinistra
@@ -124,7 +124,7 @@ std::vector<int> Re::move() const
       }
      else if(pos==7)  // basso a destra
       {
-         if (parent->getStato(pos+8)!=nero)
+         if (parent->getStato(pos+8)!=nero )
          mossepossibili.push_back(pos+8); //vado in alto
          if (parent->getStato(pos+8-1)!=nero)
          mossepossibili.push_back(pos+8-1); //vado in alto a sinistra
@@ -216,42 +216,66 @@ std::vector<int> Re::move() const
      }
 
  }
- if (!colore)
+ if (colore)
  {
-     Torre* t=dynamic_cast<Torre*>(parent->getPedina(0));
+     Torre* t=nullptr;
+     if (parent->getStato(0)==bianco)
+     t=dynamic_cast<Torre*>(parent->getPedina(0));
      if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
      {
-         if (!parent->Check(3, 0) && !parent->Check(2, 0))
+         if (!parent->Check(3, 1) && !parent->Check(2, 1))
          mossepossibili.push_back(pos-2);
      }
-
-     t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
+     t=nullptr;
+     if (parent->getStato(7)==bianco)
+      t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !check && !moved)
      {
-         if (!parent->Check(5, 0) && !parent->Check(6, 0))
+         if (!parent->Check(5, 1) && !parent->Check(6, 1))
          mossepossibili.push_back(pos+2);
      }
  }
  else  //nero
- {
-     Torre* t=dynamic_cast<Torre*>(parent->getPedina(56));
+ {   Torre* t=nullptr;
+     if (parent->getStato(56)==nero)
+     t=dynamic_cast<Torre*>(parent->getPedina(56));
      if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
      {
-         if (!parent->Check(58, 1) && !parent->Check(59, 1))
+         if (!parent->Check(58, 0) && !parent->Check(59, 0))
          mossepossibili.push_back(pos-2);
      }
-
+     t=nullptr;
+     if (parent->getStato(63)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(63));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !check && !moved)
      {
-         if (!parent->Check(61, 1) && !parent->Check(62, 1))
+         if (!parent->Check(61, 0) && !parent->Check(62, 0))
          mossepossibili.push_back(pos+2);
      }
  }
+
  return mossepossibili;
 }
+
 
 bool Re::hasmoved() const
 {
     return moved;
+}
+
+Re *Re::clone() const
+{
+    return new Re(*this);
+}
+
+void Re::domove(int p)
+{
+    if(parent->doMove(pos,p)){
+        pos=p;
+        moved=true;
+    }
+//    else
+//        throw exc;
+    else
+        std::cout<<"mossa errata";
 }
