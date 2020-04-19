@@ -6,6 +6,7 @@ class Alfiere : public Mosseax
 {
 public:
     Alfiere(bool c, int p, Scacchiera* parent);
+     Alfiere* clone() const;
 };
 
 #endif // ALFIERE_H

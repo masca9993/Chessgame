@@ -176,3 +176,8 @@ std::vector<int> Cavallo::move() const
     }
     return mossepossibili;
 }
+
+Cavallo *Cavallo::clone() const
+{
+    return new Cavallo(*this);
+}

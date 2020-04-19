@@ -9,8 +9,8 @@ public:
     Re(bool c, int p, Scacchiera* parent, bool ch=false, bool m=false);
     std::vector<int> move() const;
     bool hasmoved() const;
-    Re* clone() const;
     bool check=false;
+    Re* clone() const;
     void domove(int p);
     private:
     bool moved=false;

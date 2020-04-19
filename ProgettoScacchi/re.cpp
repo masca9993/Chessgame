@@ -223,6 +223,7 @@ std::vector<int> Re::move() const
      t=dynamic_cast<Torre*>(parent->getPedina(0));
      if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
      {
+
          if (!parent->Check(3, 1) && !parent->Check(2, 1))
          mossepossibili.push_back(pos-2);
      }
@@ -241,6 +242,7 @@ std::vector<int> Re::move() const
      t=dynamic_cast<Torre*>(parent->getPedina(56));
      if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
      {
+
          if (!parent->Check(58, 0) && !parent->Check(59, 0))
          mossepossibili.push_back(pos-2);
      }
@@ -270,12 +272,17 @@ Re *Re::clone() const
 
 void Re::domove(int p)
 {
-    if(parent->doMove(pos,p)){
-        pos=p;
+    try {
+        parent->doMove(pos,p);
+        setPosizione(p);
+        if(!moved)
         moved=true;
+    } catch (Mossa_illegale) {
+
+        std::cout<<"mossa illlegale"<<std::endl;
     }
-//    else
-//        throw exc;
-    else
-        std::cout<<"mossa errata";
+    catch (Mossa_Imposs){
+
+        std::cout<<"mossa impossibile"<<std::endl;
+    }
 }

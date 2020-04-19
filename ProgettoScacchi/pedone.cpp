@@ -52,13 +52,23 @@ std::vector<int> Pedone::move() const
 
 Pedone *Pedone::clone() const
 {
-    return new Pedone(colore,pos,parent,firstmove);
+    return new Pedone(*this);
 }
 
 void Pedone::domove(int p)
 {
-    if(parent->doMove(pos,p)){
-        pos=p;
+
+    try {
+        parent->doMove(pos,p);
+        setPosizione(p);
+        if(!firstmove)
         firstmove=true;
+    } catch (Mossa_illegale) {
+
+        std::cout<<"mossa illlegale"<<std::endl;
+    }
+    catch (Mossa_Imposs){
+
+        std::cout<<"mossa impossibile"<<std::endl;
     }
 }

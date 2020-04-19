@@ -12,3 +12,8 @@ std::vector<int> Regina::move() const
     mossepossibili.insert(mossepossibili.begin(),mossealfiere.begin(),mossealfiere.end());
     return mossepossibili;
 }
+
+Regina *Regina::clone() const
+{
+    return new Regina(*this);
+}

@@ -8,6 +8,7 @@ class Cavallo : public Pezzi
 public:
     Cavallo(bool c, int p, Scacchiera* parent);
      std::vector<int> move() const;
+     Cavallo* clone() const;
 };
 
 #endif // CAVALLO_H

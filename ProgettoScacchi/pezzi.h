@@ -2,17 +2,22 @@
 #define PEZZI_H
 #include <vector>
 #include "scacchiera.h"
-
+#include "Mossa_illegale.h"
+#include "Mossa_Imposs.h"
 class Pezzi
 {
 public:
      Pezzi(bool c,int p, Scacchiera* g =nullptr);
-    bool getColore() const;// 0=bianco; 1=nero;
+    bool getColore() const;// 1=bianco; 0=nero;
     int getPosizione() const;
+    void setPosizione(int p);
+    virtual ~Pezzi();
+    virtual Pezzi* clone() const =0;
     virtual std::vector<int> move() const =0;
     virtual void domove(int p);
+    void setParent(Scacchiera* s);
 protected:
-    bool colore; // 0=nero // 1=bianco
+    bool colore;
     //posizione
     int pos;
     Scacchiera* parent;

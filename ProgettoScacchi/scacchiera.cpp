@@ -5,11 +5,12 @@
 #include "re.h"
 #include "alfiere.h"
 #include "pedone.h"
-
+#include "Mossa_Imposs.h"
+#include "Mossa_illegale.h"
 
 Scacchiera::Scacchiera()
 {
-    /*
+/*
   board.push_back(new Torre(0, 0, this));
   board.push_back(new Cavallo(0, 1, this));
   board.push_back(new Alfiere(0, 2, this));
@@ -31,19 +32,38 @@ Scacchiera::Scacchiera()
   board.push_back(new Re(1, 60, this));
   board.push_back(new Alfiere(1, 61, this));
   board.push_back(new Cavallo(1, 62, this));
-  board.push_back(new Torre(1, 63, this));*/
+  board.push_back(new Torre(1, 63, this));
+
+
+  int posi, posf;
+  int cont=0;
+  while (1)
+  {
+      if (cont%2==0)
+      {
+         //per ogni pedone bianco if enpass=true enpass=false
+          std::cout<<"tocca al bianco"<<std::endl;
+          std::cin>>posi>>posf;
+          try {
+              board[posi]->domove(posf);
+          } catch () {
+
+          }
+
+      }
+  }*/
+
 
 for (int i=0; i<64; i++)
-    board.push_back(nullptr);
-
-  board[0]=new Re(1, 0, this, true, true);
+board.push_back(nullptr);
+  board[4]=new Re(1, 4, this);
   //board[3]=new Regina(1, 3, this);
-  board[1]=new Torre(1, 1, this, true);
-  board[16]=new Torre(0, 16, this, true);
-  board[17]=new Torre(0, 17, this, true);
-  std::vector<int> v=board[0]->move();
+  board[0]=new Torre(1, 0, this);
+  //board[16]=new Torre(1, 16, this, true);
+  board[7]=new Regina(0, 7, this);
+  std::vector<int> v=board[4]->move();
   for (unsigned int i=0; i<v.size(); i++)
-      std::cout<<v[i];
+      std::cout<<v[i]<<" ";
   //board[12]=new Cavallo(0, 12, this);
   //board[57]=new Torre(1, 57, this, true);
   //board[15]=new Torre(0, 15, this);
@@ -163,11 +183,9 @@ std::vector<int> Scacchiera::Mosse(bool g) const
 
 giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
 {
-  if (p) // re bianco
-  {
        for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
         {
-         if (board[j] && board[j]->getColore())
+         if (board[j] && board[j]->getColore()==p)
           {
              std::vector<int> mossebianco=board[j]->move();
          for (unsigned int i=0; i<mossebianco.size(); i++)
@@ -179,35 +197,35 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
          }
          }
     }
-        return nero;
-  }
-  else
-  {
-      for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
-       {
-        if (board[j] && !board[j]->getColore())
-         {
-            std::vector<int> mossenero=board[j]->move();
-        for (unsigned int i=0; i<mossenero.size(); i++)
-        {
-           Scacchiera* prova=new Scacchiera(*this);
-           prova->board[j]->domove(mossenero[i]);
-           if(!prova->W(p))
-           return none;
-        }
-        }
-   }
-       return bianco;
-  }
+      return p ? nero : bianco;
+
 }
 
-bool Scacchiera::doMove(int pos1, int pos2)
+void Scacchiera::doMove(int pos1, int pos2)
 {
-        if(board[pos2])
-         delete board[pos2];
-          board[pos2]=board[pos1];
-          board[pos1]=nullptr;
-    return true;
+          if (board[pos1])
+          {
+            std::vector<int> v=board[pos1]->move();
+            for(unsigned int i=0; i<v.size();i++){
+                if(v[i]==pos2){
+                    Scacchiera* prova=new Scacchiera(*this);
+                    if(prova->board[pos2])
+                     delete prova->board[pos2];
+                      prova->board[pos2]=prova->board[pos1];
+                      prova->board[pos1]=nullptr;
+                      prova->board[pos2]->setPosizione(pos2);
+                      if (prova->W(board[pos1]->getColore()))
+                          throw Mossa_illegale();
+
+                    if(board[pos2])
+                        delete board[pos2];
+                    board[pos2]=board[pos1];
+                    board[pos1]=nullptr;
+                    return;
+               }
+            }
+}
+        throw Mossa_Imposs();
 }
 
 
