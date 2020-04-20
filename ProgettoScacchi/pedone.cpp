@@ -1,12 +1,12 @@
 #include "pedone.h"
 
-Pedone::Pedone(bool c,int p, Scacchiera* parent, bool f) : Pezzi(c,p, parent), firstmove(f){}
+Pedone::Pedone(bool c,int p, Scacchiera* parent, bool f, bool b) : Pezzi(c,p, parent), firstmove(f), pass(b) {}
 
 std::vector<int> Pedone::move() const
 {
     std::vector<int> mossepossibili;
     //sx e dx guardando il pedone
-    if(colore){//se il colore è bianco sommo, e la mossa +7 va in diagonale a sinistra, mentre, +9 va in diagonale a destra
+    if(colore){//se il colore Ăš bianco sommo, e la mossa +7 va in diagonale a sinistra, mentre, +9 va in diagonale a destra
         if(!firstmove){
             if(!parent->getStato(pos+8))
                 mossepossibili.push_back(pos+8);
@@ -27,7 +27,7 @@ std::vector<int> Pedone::move() const
         }
     }
     else{
-        //se il colore è nero, la mossa -7 va in diagole a sinistra, mentre -9 va in diagonale a destra
+        //se il colore Ăš nero, la mossa -7 va in diagole a sinistra, mentre -9 va in diagonale a destra
         if(!firstmove){
             if(!parent->getStato(pos-8))
                 mossepossibili.push_back(pos-8);
@@ -47,28 +47,49 @@ std::vector<int> Pedone::move() const
                 mossepossibili.push_back(pos-9);
         }
     }
+    std::vector<int> v=enpassant();
+    mossepossibili.insert(mossepossibili.end(),v.begin(),v.end());
     return mossepossibili;
 }
+
 
 Pedone *Pedone::clone() const
 {
     return new Pedone(*this);
 }
 
-void Pedone::domove(int p)
+
+std::vector<int> Pedone::enpassant() const
 {
-
-    try {
-        parent->doMove(pos,p);
-        setPosizione(p);
-        if(!firstmove)
-        firstmove=true;
-    } catch (Mossa_illegale) {
-
-        std::cout<<"mossa illlegale"<<std::endl;
+    std::vector<int> mosse;
+    if(colore){                         //en passant colore bianco
+        if(pos/8==4 && (pos%8)!=0 && parent->getStato(pos+9)==none){   //en passant a sinistra
+            Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));
+            if(p && !p->getColore() && p->getpass())
+                mosse.push_back(pos+9);
+        }
+        if(pos/8==4 && (pos%8)!=7 && parent->getStato(pos+7)==none){
+            Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos+1));
+            if(p && !p->getColore() && p->getpass())
+                mosse.push_back(pos+7);
+        }
     }
-    catch (Mossa_Imposs){
-
-        std::cout<<"mossa impossibile"<<std::endl;
+    else{                               //enpassant nero
+        if(pos/8==3 && (pos%8)!=7 && parent->getStato(pos-7)==none){   //en passant a destra
+            Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos+1));
+            if(p && p->getColore() && p->getpass())
+                mosse.push_back(pos-7);
+        }
+        if(pos/8==3 && (pos%8)!=0 && parent->getStato(pos-9)==none){
+            Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));
+            if(p && p->getColore() && p->getpass())
+                mosse.push_back(pos-9);
+        }
     }
+    return mosse;
+}
+
+bool Pedone::getpass() const
+{
+    return pass;
 }
