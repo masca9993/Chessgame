@@ -56,14 +56,33 @@ Scacchiera::Scacchiera()
 
 for (int i=0; i<64; i++)
 board.push_back(nullptr);
-  board[4]=new Re(1, 4, this);
+  board[60]=new Re(0, 60, this);
   //board[3]=new Regina(1, 3, this);
-  board[0]=new Torre(1, 0, this);
-  //board[16]=new Torre(1, 16, this, true);
-  board[7]=new Regina(0, 7, this);
-  std::vector<int> v=board[4]->move();
-  for (unsigned int i=0; i<v.size(); i++)
-      std::cout<<v[i]<<" ";
+  board[56]=new Torre(0, 56, this);
+  board[29]=new Torre(1, 29, this);
+  board[35]=new Regina(1, 35, this);
+  board[63]=new Torre(0, 63, this);
+  try {
+      doMove(35, 56);
+      doMove(60, 62);
+  } catch (Mossa_illegale) {
+      std::cout<<"mossa illegale";
+  }
+  catch (Mossa_Imposs) {
+      std::cout<<"mossa impossibile";
+  }
+
+  for (int i=7; i>=0; i--)
+  {
+      for (int j=0; j<8; j++)
+      {
+          if (board[i*8+j])
+          std::cout<<"x"<<" ";
+          else
+          std::cout<<board[i*8+j]<<" ";
+      }
+      std::cout<<std::endl;
+  }
   //board[12]=new Cavallo(0, 12, this);
   //board[57]=new Torre(1, 57, this, true);
   //board[15]=new Torre(0, 15, this);
@@ -130,42 +149,6 @@ bool Scacchiera::W(bool p) const  //funzione che verifica se c'è uno scacco al 
    return false;    //se esco dal ciclo senza ritornare nulla allora ritorno falso
 }
 
-bool Scacchiera::Check(int re_pos, bool colore) const
-{
-    bool check=false;
-    if (colore)   // re bianco
-    {
-        for (unsigned int i=0; i<board.size() && !check; i++)
-        {
-          if (this->getStato(i)==nero)
-          {
-              std::vector<int> mosse_nero=board[i]->move();
-              for (unsigned int i=0; i<mosse_nero.size() && !check; i++)
-              {
-                  if (mosse_nero[i]==re_pos)
-                      check=true;
-              }
-          }
-        }
-    }
-    else
-    {
-        for (unsigned int i=0; i<board.size() && !check; i++)
-        {
-          if (this->getStato(i)==bianco)
-          {
-              std::vector<int> mosse_bianco=board[i]->move();
-              for (unsigned int i=0; i<mosse_bianco.size() && !check; i++)
-              {
-                  if (mosse_bianco[i]==re_pos)
-                      check=true;
-              }
-          }
-        }
-    }
-    return check;
-}
-
 std::vector<int> Scacchiera::Mosse(bool g) const
 {
     std::vector<int> mossetot;
@@ -181,6 +164,108 @@ std::vector<int> Scacchiera::Mosse(bool g) const
     return mossetot;
 }
 
+void Scacchiera::Arrocco(int pos1, int pos2)
+{
+      if (pos1==4)       //re bianco
+      {
+        if (pos2==2)     //arrocco lungo
+        {
+            Scacchiera* prova1=new Scacchiera(*this);
+            prova1->board[pos1-1]=prova1->board[pos1];
+            prova1->board[pos1-1]->setPosizione(pos1-1);
+            prova1->board[pos1]=nullptr;
+            Scacchiera* prova2=new Scacchiera(*this);
+            prova2->board[pos1-2]=prova2->board[pos1];
+            prova2->board[pos1-2]->setPosizione(pos1-2);
+            prova2->board[pos1]=nullptr;
+            if(!prova1->W(1) && !prova2->W(1))  //faccio l'arrocco lungo
+            {
+                board[pos2]=board[pos1];
+                board[pos1]=nullptr;
+                board[pos2]->setPosizione(pos2);
+                board[pos2+1]=board[0];
+                board[0]=nullptr;
+                board[pos2+1]->setPosizione(pos2+1);
+            }
+            else
+                throw Mossa_illegale();
+
+
+        }
+        else if (pos2==6)
+        {
+            Scacchiera* prova1=new Scacchiera(*this);
+            prova1->board[pos1+1]=prova1->board[pos1];
+            prova1->board[pos1+1]->setPosizione(pos1+1);
+            prova1->board[pos1]=nullptr;
+            Scacchiera* prova2=new Scacchiera(*this);
+            prova2->board[pos1+2]=prova2->board[pos1];
+            prova2->board[pos1+2]->setPosizione(pos1+2);
+            prova2->board[pos1]=nullptr;
+            if(!prova1->W(1) && !prova2->W(1))  //faccio l'arrocco corto
+            {
+                board[pos2]=board[pos1];
+                board[pos1]=nullptr;
+                board[pos2]->setPosizione(pos2);
+                board[pos2-1]=board[7];
+                board[7]=nullptr;
+                board[pos2-1]->setPosizione(pos2-1);
+            }
+            else
+                throw Mossa_illegale();
+        }
+      }
+      else if (pos1==60)
+      {
+          if (pos2==58)     //arrocco lungo
+          {
+              Scacchiera* prova1=new Scacchiera(*this);
+              prova1->board[pos1-1]=prova1->board[pos1];
+              prova1->board[pos1-1]->setPosizione(pos1-1);
+              prova1->board[pos1]=nullptr;
+              Scacchiera* prova2=new Scacchiera(*this);
+              prova2->board[pos1-2]=prova2->board[pos1];
+              prova2->board[pos1-2]->setPosizione(pos1-2);
+              prova2->board[pos1]=nullptr;
+              if(!prova1->W(0) && !prova2->W(0))  //faccio l'arrocco lungo
+              {
+                  board[pos2]=board[pos1];
+                  board[pos1]=nullptr;
+                  board[pos2]->setPosizione(pos2);
+                  board[pos2+1]=board[56];
+                  board[56]=nullptr;
+                  board[pos2+1]->setPosizione(pos2+1);
+              }
+              else
+                  throw Mossa_illegale();
+          }
+          else if (pos2==62)
+          {
+              Scacchiera* prova1=new Scacchiera(*this);
+              prova1->board[pos1+1]=prova1->board[pos1];
+              prova1->board[pos1+1]->setPosizione(pos1+1);
+              prova1->board[pos1]=nullptr;
+              Scacchiera* prova2=new Scacchiera(*this);
+              prova2->board[pos1+2]=prova2->board[pos1];
+              prova2->board[pos1+2]->setPosizione(pos1+2);
+              prova2->board[pos1]=nullptr;
+              if(!prova1->W(0) && !prova2->W(0))  //faccio l'arrocco corto
+              {
+                  board[pos2]=board[pos1];
+                  board[pos1]=nullptr;
+                  board[pos2]->setPosizione(pos2);
+                  board[pos2-1]=board[63];
+                  board[63]=nullptr;
+                  board[pos2-1]->setPosizione(pos2-1);
+              }
+              else
+                  throw Mossa_illegale();
+          }
+      }
+      else
+          throw Mossa_Imposs();
+}
+
 giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
 {
        for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
@@ -191,7 +276,7 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
          for (unsigned int i=0; i<mossebianco.size(); i++)
          {
             Scacchiera* prova=new Scacchiera(*this);
-            prova->board[j]->domove(mossebianco[i]);
+            prova->doMove(j,mossebianco[i]);
             if(!prova->W(p))
             return none;
          }
@@ -201,6 +286,7 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
+
 void Scacchiera::doMove(int pos1, int pos2)
 {
           if (board[pos1])
@@ -208,6 +294,13 @@ void Scacchiera::doMove(int pos1, int pos2)
             std::vector<int> v=board[pos1]->move();
             for(unsigned int i=0; i<v.size();i++){
                 if(v[i]==pos2){
+                    if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
+                    {
+                     Arrocco(pos1, v[i]);
+                        return;
+                    }
+                    else
+                    {
                     Scacchiera* prova=new Scacchiera(*this);
                     if(prova->board[pos2])
                      delete prova->board[pos2];
@@ -221,7 +314,9 @@ void Scacchiera::doMove(int pos1, int pos2)
                         delete board[pos2];
                     board[pos2]=board[pos1];
                     board[pos1]=nullptr;
+                    board[pos2]->setPosizione(pos2);
                     return;
+                    }
                }
             }
 }

@@ -13,13 +13,13 @@ public:
     giocatore getStato(int pos) const;  //ritorna se nella posizione 'pos' la casella è libera oppure è occupata da un giocatore bianco o nero
     Pezzi* getPedina(int pos) const;  //ritorna un puntatore al pezzo che risiede nela casella pos
     ~Scacchiera();
-    bool Check(int re_pos, bool colore) const;   //verifica se il re nella posizione re_pos e del colore è sottoscacco
-    std::vector<int> Mosse(bool g) const;
     giocatore Winner(bool p);
-   void doMove(int pos1, int pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
+    bool W(bool p) const;  // p è il colore del re di cui si vuole controllare lo scacco
+    void doMove(int pos1, int pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
 private:
     std::vector<Pezzi*> board;
-    bool W(bool p) const;  // p è il colore del re di cui si vuole controllare lo scacco
+    std::vector<int> Mosse(bool g) const;
+    void Arrocco(int pos1, int pos2);
 };
 
 #endif // SCACCHIERA_H
