@@ -11,7 +11,7 @@ public:
     bool hasmoved() const;
     bool check=false;
     Re* clone() const;
-    void domove(int p);
+   void setPosizione(int p);
     private:
     bool moved=false;
 };

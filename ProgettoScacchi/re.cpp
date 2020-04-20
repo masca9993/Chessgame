@@ -2,6 +2,7 @@
 #include "torre.h"
 Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent), check(ch), moved(m)
 {}
+
 std::vector<int> Re::move() const
 
 {
@@ -216,49 +217,42 @@ std::vector<int> Re::move() const
      }
 
  }
+  //inserisco in arrocco prima l'arrocco lungo poi l'arrocco corto, e inserisco arrocco alla fine di mossepossibili, altrimenti metto -1;
  if (colore)
  {
      Torre* t=nullptr;
      if (parent->getStato(0)==bianco)
      t=dynamic_cast<Torre*>(parent->getPedina(0));
      if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
-     {
-
-         if (!parent->Check(3, 1) && !parent->Check(2, 1))
          mossepossibili.push_back(pos-2);
-     }
+     else
+         mossepossibili.push_back(-1);
      t=nullptr;
      if (parent->getStato(7)==bianco)
       t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !check && !moved)
-     {
-         if (!parent->Check(5, 1) && !parent->Check(6, 1))
-         mossepossibili.push_back(pos+2);
-     }
+          mossepossibili.push_back(pos+2);
+     else
+         mossepossibili.push_back(-1);
  }
  else  //nero
  {   Torre* t=nullptr;
      if (parent->getStato(56)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(56));
      if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
-     {
-
-         if (!parent->Check(58, 0) && !parent->Check(59, 0))
          mossepossibili.push_back(pos-2);
-     }
+        else
+         mossepossibili.push_back(-1);
      t=nullptr;
      if (parent->getStato(63)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(63));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !check && !moved)
-     {
-         if (!parent->Check(61, 0) && !parent->Check(62, 0))
          mossepossibili.push_back(pos+2);
-     }
+        else
+         mossepossibili.push_back(-1);
  }
-
  return mossepossibili;
 }
-
 
 bool Re::hasmoved() const
 {
@@ -270,19 +264,10 @@ Re *Re::clone() const
     return new Re(*this);
 }
 
-void Re::domove(int p)
+
+void Re::setPosizione(int p)
 {
-    try {
-        parent->doMove(pos,p);
-        setPosizione(p);
-        if(!moved)
-        moved=true;
-    } catch (Mossa_illegale) {
-
-        std::cout<<"mossa illlegale"<<std::endl;
-    }
-    catch (Mossa_Imposs){
-
-        std::cout<<"mossa impossibile"<<std::endl;
-    }
+    pos=p;
+    if(!moved)
+    moved=true;
 }
