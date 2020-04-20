@@ -293,7 +293,6 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
-
 void Scacchiera::doMove(int pos1, int pos2)
 {
           if (board[pos1])
@@ -308,6 +307,39 @@ void Scacchiera::doMove(int pos1, int pos2)
                     }
                     else
                     {
+                        if(typeid(*getPedina(pos1))==typeid(Pedone)){
+                            std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
+                            for(unsigned int y=0;y<p.size();y++){
+                                if(pos2==p[y]){
+                                    Scacchiera* prova=new Scacchiera(*this);
+                                    if(prova->board[pos1]->getColore()){
+                                        //delete prova->board[pos2-8];
+                                        prova->board[pos2-8]=nullptr;
+                                    }
+                                    else{
+                                        //delete prova->board[pos2+8];
+                                        prova->board[pos2+8]=nullptr;
+                                    }
+                                    prova->board[pos2]=prova->board[pos1];
+                                    prova->board[pos1]=nullptr;
+                                    prova->board[pos2]->setPosizione(pos2);
+                                    if (prova->W(board[pos1]->getColore()))
+                                        throw Mossa_illegale();
+                                    if(board[pos1]->getColore()){
+                                        delete board[pos2-8];
+                                        board[pos2-8]=nullptr;
+                                    }
+                                    else{
+                                        delete board[pos2+8];
+                                        board[pos2+8]=nullptr;
+                                    }
+                                    board[pos2]=board[pos1];
+                                   board[pos1]=nullptr;
+                                   board[pos2]->setPosizione(pos2);
+                                   return;
+                               }
+                            }
+                        }
                     Scacchiera* prova=new Scacchiera(*this);
                     if(prova->board[pos2])
                      delete prova->board[pos2];
@@ -329,5 +361,3 @@ void Scacchiera::doMove(int pos1, int pos2)
 }
         throw Mossa_Imposs();
 }
-
-
