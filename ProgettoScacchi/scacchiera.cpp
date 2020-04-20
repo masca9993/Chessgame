@@ -10,31 +10,31 @@
 
 Scacchiera::Scacchiera()
 {
-/*
-  board.push_back(new Torre(0, 0, this));
-  board.push_back(new Cavallo(0, 1, this));
-  board.push_back(new Alfiere(0, 2, this));
-  board.push_back(new Regina(0, 3, this));
-  board.push_back(new Re(0, 4, this));
-  board.push_back(new Alfiere(0, 5, this));
-  board.push_back(new Cavallo(0, 6, this));
-  board.push_back(new Torre(0, 7, this));
+
+  board.push_back(new Torre(1, 0, this));
+  board.push_back(new Cavallo(1, 1, this));
+  board.push_back(new Alfiere(1, 2, this));
+  board.push_back(new Regina(1, 3, this));
+  board.push_back(new Re(1, 4, this));
+  board.push_back(new Alfiere(1, 5, this));
+  board.push_back(new Cavallo(1, 6, this));
+  board.push_back(new Torre(1, 7, this));
   for (int i=0; i<8; i++)
-  board.push_back(new Pedone(0, 8+i, this));
+  board.push_back(new Pedone(1, 8+i, this));
   for (int i=0; i<32; i++)
   board.push_back(nullptr);
   for (int i=0; i<8; i++)
-  board.push_back(new Pedone(1, 48+i, this));
-  board.push_back(new Torre(1, 56, this));
-  board.push_back(new Cavallo(1, 57, this));
-  board.push_back(new Alfiere(1, 58, this));
-  board.push_back(new Regina(1, 59, this));
-  board.push_back(new Re(1, 60, this));
-  board.push_back(new Alfiere(1, 61, this));
-  board.push_back(new Cavallo(1, 62, this));
-  board.push_back(new Torre(1, 63, this));
+  board.push_back(new Pedone(0, 48+i, this));
+  board.push_back(new Torre(0, 56, this));
+  board.push_back(new Cavallo(0, 57, this));
+  board.push_back(new Alfiere(0, 58, this));
+  board.push_back(new Regina(0, 59, this));
+  board.push_back(new Re(0, 60, this));
+  board.push_back(new Alfiere(0, 61, this));
+  board.push_back(new Cavallo(0, 62, this));
+  board.push_back(new Torre(0, 63, this));
 
-
+/*
   int posi, posf;
   int cont=0;
   while (1)
@@ -51,7 +51,7 @@ Scacchiera::Scacchiera()
           }
 
       }
-  }*/
+  }
 
 
 for (int i=0; i<64; i++)
@@ -61,10 +61,17 @@ board.push_back(nullptr);
   board[56]=new Torre(0, 56, this);
   board[29]=new Torre(1, 29, this);
   board[35]=new Regina(1, 35, this);
-  board[63]=new Torre(0, 63, this);
+  board[63]=new Torre(0, 63, this);*/
   try {
-      doMove(35, 56);
-      doMove(60, 62);
+      doMove(12, 28);
+      doMove(57, 42);
+      doMove(5, 33);
+      doMove(51,43);
+      doMove(11, 27);
+      doMove(58, 51);
+      doMove(6, 21);
+      doMove(42, 27);
+      doMove(4,6);
   } catch (Mossa_illegale) {
       std::cout<<"mossa illegale";
   }
