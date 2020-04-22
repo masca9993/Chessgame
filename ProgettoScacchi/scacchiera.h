@@ -20,6 +20,7 @@ private:
     std::vector<Pezzi*> board;
     std::vector<int> Mosse(bool g) const;
     void Arrocco(int pos1, int pos2);
+    void Promozione(const int& pos, const char& pezzo);
 };
 
 #endif // SCACCHIERA_H

@@ -34,51 +34,120 @@ Scacchiera::Scacchiera()
   board.push_back(new Cavallo(0, 62, this));
   board.push_back(new Torre(0, 63, this));
 
-/*
   int posi, posf;
   int cont=0;
   while (1)
   {
+      for (int i=7; i>=0; i--)
+      {
+          for (int j=0; j<8; j++)
+          {
+              if (board[i*8+j])
+              std::cout<<"x"<<" ";
+              else
+              std::cout<<board[i*8+j]<<" ";
+          }
+          std::cout<<std::endl;
+     }
       if (cont%2==0)
       {
          //per ogni pedone bianco if enpass=true enpass=false
+          for (int i=0; i<8; i++)
+          {
+              Pedone* t;
+              t=dynamic_cast<Pedone*>(board[24+i]);
+              if (t)
+              t->setpass(false);
+          }
           std::cout<<"tocca al bianco"<<std::endl;
           std::cin>>posi>>posf;
           try {
-              board[posi]->domove(posf);
-          } catch () {
-
+              doMove(posi, posf);
+              if (typeid(*board[posf])==typeid(Pedone) && posf>=56)
+              {
+                  char pezzo;
+                  std::cout<<"r=Regina t=torre c=cavallo a=alfiere"<<std::endl;
+                  std::cin>>pezzo;
+                  Promozione(posf, pezzo);
+              }
+          }
+          catch (Mossa_illegale) {
+              std::cout<<"mossa illegale";
+              cont--;
+          }
+          catch (Mossa_Imposs) {
+              std::cout<<"mossa impossibile";
+              cont--;
           }
 
+         if (W(0))
+         {
+             if(Winner(0)==bianco)
+             {
+              std::cout<<"ha vinto il bianco";
+             break;
+             }
+         }
+
       }
+      else
+      {
+          for (int i=0; i<8; i++)
+          {
+              Pedone* t;
+              t=dynamic_cast<Pedone*>(board[32+i]);
+              if (t)
+              t->setpass(false);
+          }
+          std::cout<<"tocca al nero"<<std::endl;
+          std::cin>>posi>>posf;
+          try {
+              doMove(posi, posf);
+              if (typeid(*board[posf])==typeid(Pedone) && posf<=7)
+              {
+                  char pezzo;
+                  std::cout<<"r=Regina t=torre c=cavallo a=alfiere"<<std::endl;
+                  std::cin>>pezzo;
+                  Promozione(posf, pezzo);
+              }
+          }
+          catch (Mossa_illegale) {
+              std::cout<<"mossa illegale";
+              cont--;
+          }
+          catch (Mossa_Imposs) {
+              std::cout<<"mossa impossibile";
+              cont--;
+          }
+         if (W(1))
+         {
+             if(Winner(1)==nero)
+             {
+               std::cout<<"ha vinto il nero";
+             break;
+             }
+         }
+      }
+
+      cont++;
   }
 
-
-for (int i=0; i<64; i++)
-board.push_back(nullptr);
-  board[60]=new Re(0, 60, this);
-  //board[3]=new Regina(1, 3, this);
-  board[56]=new Torre(0, 56, this);
-  board[29]=new Torre(1, 29, this);
-  board[35]=new Regina(1, 35, this);
-  board[63]=new Torre(0, 63, this);*/
+  /*
   try {
       doMove(12, 28);
-      doMove(57, 42);
-      doMove(5, 33);
-      doMove(51,43);
-      doMove(11, 27);
-      doMove(58, 51);
-      doMove(6, 21);
-      doMove(42, 27);
-      doMove(4,6);
-  } catch (Mossa_illegale) {
+  }
+  catch (Mossa_illegale) {
       std::cout<<"mossa illegale";
   }
   catch (Mossa_Imposs) {
       std::cout<<"mossa impossibile";
   }
+         if (W(0))
+         {
+             if(Winner(0)==bianco)
 
+               std::cout<<"ha vinto il bianco";
+         }
   for (int i=7; i>=0; i--)
   {
       for (int j=0; j<8; j++)
@@ -89,7 +158,16 @@ board.push_back(nullptr);
           std::cout<<board[i*8+j]<<" ";
       }
       std::cout<<std::endl;
-  }
+}*/
+/*
+for (int i=0; i<64; i++)
+board.push_back(nullptr);
+  board[60]=new Re(0, 60, this);
+  //board[3]=new Regina(1, 3, this);
+  board[56]=new Torre(0, 56, this);
+  board[29]=new Torre(1, 29, this);
+  board[35]=new Regina(1, 35, this);
+  board[63]=new Torre(0, 63, this);*/
   //board[12]=new Cavallo(0, 12, this);
   //board[57]=new Torre(1, 57, this, true);
   //board[15]=new Torre(0, 15, this);
@@ -273,19 +351,68 @@ void Scacchiera::Arrocco(int pos1, int pos2)
           throw Mossa_Imposs();
 }
 
+void Scacchiera::Promozione(const int& pos, const char& pezzo)
+{
+    if (pezzo=='r')
+    {
+        delete board[pos];
+        if (pos<=7)
+        board[pos]=new Regina(0, pos, this);
+        else
+        board[pos]=new Regina(1, pos, this);
+    }
+    else if (pezzo=='t')
+    {
+        delete board[pos];
+        if (pos<=7)
+        board[pos]=new Torre(0, pos, this);
+        else
+        board[pos]=new Torre(1, pos, this);
+    }
+    else if (pezzo=='a')
+    {
+        delete board[pos];
+        if (pos<=7)
+        board[pos]=new Alfiere(0, pos, this);
+        else
+        board[pos]=new Alfiere(1, pos, this);
+    }
+    else if (pezzo=='c')
+    {
+        delete board[pos];
+        if (pos<=7)
+        board[pos]=new Cavallo(0, pos, this);
+        else
+        board[pos]=new Cavallo(1, pos, this);
+    }
+    else
+    {
+        throw Mossa_Imposs();
+    }
+
+}
+
+
 giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
 {
        for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
         {
          if (board[j] && board[j]->getColore()==p)
           {
-             std::vector<int> mossebianco=board[j]->move();
-         for (unsigned int i=0; i<mossebianco.size(); i++)
+             std::vector<int> mosse=board[j]->move();
+         for (unsigned int i=0; i<mosse.size(); i++)
          {
+           // std::cout<<j<<" "<<mosse[i]<<std::endl;
+             if (mosse[i]!=-1)
+             {
             Scacchiera* prova=new Scacchiera(*this);
-            prova->doMove(j,mossebianco[i]);
+            if (prova->board[mosse[i]])
+            delete prova->board[mosse[i]];
+           prova->board[mosse[i]]=prova->board[j];
+           prova->board[j]=nullptr;
             if(!prova->W(p))
             return none;
+             }
          }
          }
     }
@@ -293,71 +420,79 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
+
 void Scacchiera::doMove(int pos1, int pos2)
 {
-          if (board[pos1])
-          {
-            std::vector<int> v=board[pos1]->move();
-            for(unsigned int i=0; i<v.size();i++){
-                if(v[i]==pos2){
-                    if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
-                    {
-                     Arrocco(pos1, v[i]);
-                        return;
-                    }
-                    else
-                    {
-                        if(typeid(*getPedina(pos1))==typeid(Pedone)){
-                            std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
-                            for(unsigned int y=0;y<p.size();y++){
-                                if(pos2==p[y]){
-                                    Scacchiera* prova=new Scacchiera(*this);
-                                    if(prova->board[pos1]->getColore()){
-                                        //delete prova->board[pos2-8];
-                                        prova->board[pos2-8]=nullptr;
-                                    }
-                                    else{
-                                        //delete prova->board[pos2+8];
-                                        prova->board[pos2+8]=nullptr;
-                                    }
-                                    prova->board[pos2]=prova->board[pos1];
-                                    prova->board[pos1]=nullptr;
-                                    prova->board[pos2]->setPosizione(pos2);
-                                    if (prova->W(board[pos1]->getColore()))
-                                        throw Mossa_illegale();
-                                    if(board[pos1]->getColore()){
-                                        delete board[pos2-8];
-                                        board[pos2-8]=nullptr;
-                                    }
-                                    else{
-                                        delete board[pos2+8];
-                                        board[pos2+8]=nullptr;
-                                    }
-                                    board[pos2]=board[pos1];
-                                   board[pos1]=nullptr;
-                                   board[pos2]->setPosizione(pos2);
-                                   return;
-                               }
-                            }
-                        }
-                    Scacchiera* prova=new Scacchiera(*this);
-                    if(prova->board[pos2])
-                     delete prova->board[pos2];
-                      prova->board[pos2]=prova->board[pos1];
-                      prova->board[pos1]=nullptr;
-                      prova->board[pos2]->setPosizione(pos2);
-                      if (prova->W(board[pos1]->getColore()))
-                          throw Mossa_illegale();
+    if (board[pos1])
+            {
+              std::vector<int> v=board[pos1]->move();
+              for(unsigned int i=0; i<v.size();i++){
+                  if(v[i]==pos2){
+                      if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
+                      {
+                       Arrocco(pos1, v[i]);
+                          return;
+                      }
 
-                    if(board[pos2])
-                        delete board[pos2];
-                    board[pos2]=board[pos1];
-                    board[pos1]=nullptr;
-                    board[pos2]->setPosizione(pos2);
-                    return;
-                    }
-               }
-            }
+                      Scacchiera* prova=new Scacchiera(*this);
+                      if(prova->board[pos2])
+                       delete prova->board[pos2];
+                        prova->board[pos2]=prova->board[pos1];
+                        prova->board[pos1]=nullptr;
+                        prova->board[pos2]->setPosizione(pos2);
+                        if (prova->W(board[pos1]->getColore()))
+                            throw Mossa_illegale();
+
+                      if(board[pos2])
+                          delete board[pos2];
+                      board[pos2]=board[pos1];
+                      board[pos1]=nullptr;
+                      board[pos2]->setPosizione(pos2);
+                      if (pos2==pos1+16 || pos2==pos1-16)
+                      {
+                          Pedone* t;
+                          t=dynamic_cast<Pedone*>(board[pos2]);
+                          if (t)
+                          t->setpass(true);
+                      }
+                      return;
+                      }
+              }
+              if(typeid(*getPedina(pos1))==typeid(Pedone)){
+                  std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
+                  for(unsigned int y=0;y<p.size();y++){
+                      if(pos2==p[y]){
+                          Scacchiera* prova=new Scacchiera(*this);
+                          if(prova->board[pos1]->getColore()){
+                              //delete prova->board[pos2-8];
+                              prova->board[pos2-8]=nullptr;
+                          }
+                          else{
+                              //delete prova->board[pos2+8];
+                              prova->board[pos2+8]=nullptr;
+                          }
+                          prova->board[pos2]=prova->board[pos1];
+                          prova->board[pos1]=nullptr;
+                          prova->board[pos2]->setPosizione(pos2);
+                          if (prova->W(board[pos1]->getColore()))
+                              throw Mossa_illegale();
+                          if(board[pos1]->getColore()){
+                              delete board[pos2-8];
+                              board[pos2-8]=nullptr;
+                          }
+                          else{
+                              delete board[pos2+8];
+                              board[pos2+8]=nullptr;
+                          }
+                          board[pos2]=board[pos1];
+                         board[pos1]=nullptr;
+                         board[pos2]->setPosizione(pos2);
+                         return;
+                     }
+                  }
+              }
+  }
+          throw Mossa_Imposs();
 }
-        throw Mossa_Imposs();
-}
+
+

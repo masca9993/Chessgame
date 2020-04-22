@@ -65,31 +65,38 @@ std::vector<int> Pedone::enpassant() const
     if(colore){                         //en passant colore bianco
         if(pos/8==4 && (pos%8)!=0 && parent->getStato(pos+9)==none){   //en passant a sinistra
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));
-            if(p && !p->getColore() && p->getpass())
+            if(p && !p->getColore() && p->pass)
                 mosse.push_back(pos+9);
         }
         if(pos/8==4 && (pos%8)!=7 && parent->getStato(pos+7)==none){
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos+1));
-            if(p && !p->getColore() && p->getpass())
+            if(p && !p->getColore() && p->pass)
                 mosse.push_back(pos+7);
         }
     }
     else{                               //enpassant nero
         if(pos/8==3 && (pos%8)!=7 && parent->getStato(pos-7)==none){   //en passant a destra
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos+1));
-            if(p && p->getColore() && p->getpass())
+            if(p && p->getColore() && p->pass)
                 mosse.push_back(pos-7);
         }
         if(pos/8==3 && (pos%8)!=0 && parent->getStato(pos-9)==none){
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));
-            if(p && p->getColore() && p->getpass())
+            if(p && p->getColore() && p->pass)
                 mosse.push_back(pos-9);
         }
     }
     return mosse;
 }
 
-bool Pedone::getpass() const
+bool Pedone::setpass(bool p)
 {
-    return pass;
+  pass=p;
+}
+
+void Pedone::setPosizione(int p)
+{
+    pos=p;
+    if(!firstmove)
+    firstmove=true;
 }
