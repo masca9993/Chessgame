@@ -10,7 +10,7 @@ public:
     std::vector<int> move() const;
     Pedone* clone() const;
     std::vector<int> enpassant() const;
-    bool setpass(bool p);
+    void setpass(bool c) ;
     void setPosizione(int p);
 private:
     bool firstmove;  //prima mossa del pedone
