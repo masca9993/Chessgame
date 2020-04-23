@@ -7,6 +7,7 @@
 #include "pedone.h"
 #include "Mossa_Imposs.h"
 #include "Mossa_illegale.h"
+#include <typeinfo>
 
 Scacchiera::Scacchiera()
 {
