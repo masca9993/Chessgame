@@ -20,20 +20,7 @@ Pezzi::~Pezzi()
 {
 
 }
-void Pezzi::domove(int p)
-{
-    try {
-         parent->doMove(pos,p);
 
-        setPosizione(p);
-    } catch (Mossa_illegale) {
-        std::cout<<"mossa illlegale"<<std::endl;
-    }
-    catch (Mossa_Imposs){
-        std::cout<<"mossa impossibile"<<std::endl;
-    }
-
-}
 
 void Pezzi::setParent(Scacchiera *s)
 {
