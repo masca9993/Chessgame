@@ -10,11 +10,10 @@ public:
      Pezzi(bool c,int p, Scacchiera* g =nullptr);
     bool getColore() const;// 1=bianco; 0=nero;
     int getPosizione() const;
-    void setPosizione(int p);
+    virtual void setPosizione(int p);
     virtual ~Pezzi();
     virtual Pezzi* clone() const =0;
     virtual std::vector<int> move() const =0;
-    virtual void domove(int p);
     void setParent(Scacchiera* s);
 protected:
     bool colore;
