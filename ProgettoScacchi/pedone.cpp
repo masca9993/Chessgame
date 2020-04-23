@@ -48,7 +48,7 @@ std::vector<int> Pedone::move() const
         }
     }
     std::vector<int> v=enpassant();
-    mossepossibili.insert(mossepossibili.end(),v.begin(),v.end());
+    mossepossibili.insert(mossepossibili.end(),v.begin(),v.end()); //devo modificare con + (mossepossibili=mossepossibili+v)
     return mossepossibili;
 }
 
@@ -66,12 +66,12 @@ std::vector<int> Pedone::enpassant() const
         if(pos/8==4 && (pos%8)!=0 && parent->getStato(pos+9)==none){   //en passant a sinistra
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));
             if(p && !p->getColore() && p->pass)
-                mosse.push_back(pos+9);
+                mosse.push_back(pos+7);
         }
         if(pos/8==4 && (pos%8)!=7 && parent->getStato(pos+7)==none){
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos+1));
             if(p && !p->getColore() && p->pass)
-                mosse.push_back(pos+7);
+                mosse.push_back(pos+9);
         }
     }
     else{                               //enpassant nero
@@ -89,14 +89,18 @@ std::vector<int> Pedone::enpassant() const
     return mosse;
 }
 
-bool Pedone::setpass(bool p)
+void Pedone::setpass(bool c)
 {
-  pass=p;
+    pass=c;
 }
 
 void Pedone::setPosizione(int p)
 {
+    if(p==pos+16 || p==pos-16)
+        pass=true;
     pos=p;
     if(!firstmove)
-    firstmove=true;
+        firstmove=true;
 }
+
+
