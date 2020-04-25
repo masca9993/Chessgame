@@ -2,6 +2,14 @@
 #define SCACCHI_H
 
 #include <QWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QPushButton>
+#include <QFile>
 
 
 class Scacchi : public QWidget
@@ -13,6 +21,13 @@ public:
     ~Scacchi();
 
 private:
+    QVBoxLayout* mainlayout;
+    QHBoxLayout* hlayout;
+    QGridLayout* gridlayout;
+
+    void addMenu();
+    void addButtons();
+
 
 };
 #endif // SCACCHI_H
