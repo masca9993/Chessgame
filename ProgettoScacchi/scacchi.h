@@ -24,10 +24,10 @@ private:
     QVBoxLayout* mainlayout;
     QHBoxLayout* hlayout;
     QGridLayout* gridlayout;
-
     void addMenu();
     void addButtons();
-
+public slots:
+    void setButtons();
 
 };
 #endif // SCACCHI_H
