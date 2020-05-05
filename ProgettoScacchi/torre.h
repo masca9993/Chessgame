@@ -9,7 +9,7 @@ public:
     Torre(bool c, int p, Scacchiera* parent, bool m=false);
     bool hasmoved() const;
     Torre* clone() const;
-    void setPosizione(int p);
+    void domove(int p);
 private:
     bool moved;
 };

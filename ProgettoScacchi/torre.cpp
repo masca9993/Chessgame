@@ -13,10 +13,21 @@ Torre *Torre::clone() const
     return new Torre(*this);
 }
 
-void Torre::setPosizione(int p)
+void Torre::domove(int p)
 {
-    pos=p;
-    if(!moved)
-    moved=true;
+    try {
+        parent->doMove(pos,p);
+        setPosizione(p);
+        if(!moved)
+        moved=true;
+    } catch (Mossa_illegale) {
+
+        std::cout<<"mossa illegale"<<std::endl;
+
+    }
+    catch (Mossa_Imposs){
+
+        std::cout<<"mossa impossibile"<<std::endl;
+    }
 }
 

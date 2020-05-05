@@ -2,7 +2,10 @@
 #include "ui_scacchi.h"
 #include <QIcon>
 #include <QSize>
-Scacchi::Scacchi(QWidget *parent) : QWidget(parent)
+#include "controller.h"
+#include <QString>
+
+Scacchi::Scacchi(Controller* p,QWidget *parent) : controller(p), QWidget(parent)
 {
     mainlayout= new QVBoxLayout(this);
     hlayout= new QHBoxLayout();
@@ -23,10 +26,17 @@ Scacchi::~Scacchi()
 
 }
 
+QLayoutItem *Scacchi::getBoardItem(int pos) const
+{
+    return gridlayout->itemAtPosition(pos/8, pos%8);
+}
+
 void Scacchi::setButtons()
 {
     QPushButton* p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 0)->widget());
     p->setIcon(QIcon(":/TorreNera.png"));
+    QString k="O";
+    p->setText(k);
     p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 1)->widget());
     p->setIcon(QIcon(":/CavalloNero.png"));
     p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 2)->widget());
@@ -100,16 +110,17 @@ void Scacchi::addButtons()
     for(int i=0;i<8;i++){
        if(i%2!=0){
             for(int y=0;y<8;y++){
-                QPushButton* button=new QPushButton(this);
+                ChessButton* button=new ChessButton((i*8-56)*-1+y,this);
+                connect(button,SIGNAL(buttonclicked(int)),controller,SLOT(vedimosse(int)));
                 button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 if(y%2==0){
-                    QFile file(":/Black.css");
+                    QFile file(":/styleBlack.css");
                     file.open(QFile::ReadOnly);
                     QString styleSheet = QLatin1String(file.readAll());
                     button->setStyleSheet(styleSheet);
                 }
                 else{
-                    QFile file(":/styleWhite.css");
+                    QFile file(":/styleWhithe.css");
                     file.open(QFile::ReadOnly);
                     QString styleSheet = QLatin1String(file.readAll());
                     button->setStyleSheet(styleSheet);
@@ -119,16 +130,17 @@ void Scacchi::addButtons()
        }
        else{
            for(int y=0;y<8;y++){
-               QPushButton* button=new QPushButton(this);
+               ChessButton* button=new ChessButton((i*8-56)*-1+y,this);
+               connect(button,SIGNAL(buttonclicked(int)),controller,SLOT(vedimosse(int)));
                button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                if(y%2==0){
-                   QFile file(":/styleWhite.css");
+                   QFile file(":/styleWhithe.css");
                    file.open(QFile::ReadOnly);
                    QString styleSheet = QLatin1String(file.readAll());
                    button->setStyleSheet(styleSheet);
                }
                else{
-                   QFile file(":/Black.css");
+                   QFile file(":/styleBlack.css");
                    file.open(QFile::ReadOnly);
                    QString styleSheet = QLatin1String(file.readAll());
                    button->setStyleSheet(styleSheet);

@@ -32,14 +32,13 @@ SOURCES += \
     torre.cpp
 
 HEADERS += \
-    Mossa_Imposs.h \
-    Mossa_illegale.h \
     alfiere.h \
     cavallo.h \
     chessbutton.h \
     controller.h \
     mosseacroce.h \
     mosseax.h \
+    pedone.h \
     pedone.h \
     pezzi.h \
     re.h \
@@ -56,19 +55,9 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+DISTFILES += \
+    ProgettoScacchi.pro.user \
+    ProgettoScacchi.pro.user.3815ac2
+
 RESOURCES += \
     resources.qrc
-
-DISTFILES += \
-    AlfiereBianco.png \
-    AlfiereNero.png \
-    CavalloBianco.png \
-    CavalloNero.png \
-    PedoneBianco.png \
-    PedoneNero.png \
-    ReBianco.png \
-    ReNero.png \
-    ReginaBianca.png \
-    ReginaNera.png \
-    TorreBianca.png \
-    TorreNera.png

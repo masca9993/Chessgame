@@ -10,6 +10,9 @@
 #include <QAction>
 #include <QPushButton>
 #include <QFile>
+#include "chessbutton.h"
+
+class Controller;
 
 
 class Scacchi : public QWidget
@@ -17,10 +20,11 @@ class Scacchi : public QWidget
     Q_OBJECT
 
 public:
-    Scacchi(QWidget *parent = nullptr);
+    Scacchi(Controller* p,QWidget *parent = nullptr);
     ~Scacchi();
-
+    QLayoutItem* getBoardItem(int pos) const;
 private:
+    Controller* controller;
     QVBoxLayout* mainlayout;
     QHBoxLayout* hlayout;
     QGridLayout* gridlayout;

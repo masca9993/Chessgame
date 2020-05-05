@@ -6,14 +6,17 @@
 #include <vector>
 #include <QApplication>
 #include <iostream>
+#include "controller.h"
+
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    Scacchi w;
-    w.show();
+    Scacchiera m;
+    Controller c(&m);
+    Scacchi v(&c);
+    c.setView(&v);
+    v.show();
     return a.exec();
-    //Scacchiera s;
-
     return 0;
 }
