@@ -1,6 +1,6 @@
 #include "re.h"
 #include "torre.h"
-Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent), check(ch), moved(m)
+Re::Re(bool c, int p, Scacchiera* parent, bool m) : Pezzi(c, p, parent), moved(m)
 {}
 
 std::vector<int> Re::move() const
@@ -223,14 +223,14 @@ std::vector<int> Re::move() const
      Torre* t=nullptr;
      if (parent->getStato(0)==bianco)
      t=dynamic_cast<Torre*>(parent->getPedina(0));
-     if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
+     if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !parent->W(1) && !moved) //arrocco a sinistra
          mossepossibili.push_back(pos-2);
      else
          mossepossibili.push_back(-1);
      t=nullptr;
      if (parent->getStato(7)==bianco)
       t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
-     if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !check && !moved)
+     if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !parent->W(1)  && !moved)
           mossepossibili.push_back(pos+2);
      else
          mossepossibili.push_back(-1);
@@ -239,14 +239,14 @@ std::vector<int> Re::move() const
  {   Torre* t=nullptr;
      if (parent->getStato(56)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(56));
-     if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
+     if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !parent->W(0) && !moved) //arrocco a sinistra
          mossepossibili.push_back(pos-2);
         else
          mossepossibili.push_back(-1);
      t=nullptr;
      if (parent->getStato(63)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(63));   //arrocco a destra
-     if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !check && !moved)
+     if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !parent->W(0)  && !moved)
          mossepossibili.push_back(pos+2);
         else
          mossepossibili.push_back(-1);

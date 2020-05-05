@@ -6,10 +6,9 @@
 class Re : public Pezzi
 {
 public:
-    Re(bool c, int p, Scacchiera* parent, bool ch=false, bool m=false);
+    Re(bool c, int p, Scacchiera* parent, bool m=false);
     std::vector<int> move() const;
     bool hasmoved() const;
-    bool check=false;
     Re* clone() const;
    void setPosizione(int p);
     private:

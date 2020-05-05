@@ -102,5 +102,3 @@ void Pedone::setPosizione(int p)
     if(!firstmove)
         firstmove=true;
 }
-
-

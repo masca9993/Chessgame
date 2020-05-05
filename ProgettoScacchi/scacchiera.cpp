@@ -34,7 +34,7 @@ Scacchiera::Scacchiera()
   board.push_back(new Alfiere(0, 61, this));
   board.push_back(new Cavallo(0, 62, this));
   board.push_back(new Torre(0, 63, this));
-
+/*
   int posi, posf;
   int cont=0;
   while (1)
@@ -132,7 +132,7 @@ Scacchiera::Scacchiera()
 
       cont++;
   }
-
+*/
   /*
   try {
       doMove(12, 28);
@@ -421,6 +421,8 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
+
+
 /*
 void Scacchiera::doMove(int pos1, int pos2)
 {
@@ -503,15 +505,15 @@ void Scacchiera::doMove(int pos1, int pos2)
             std::vector<int> v=board[pos1]->move();
             for(unsigned int i=0; i<v.size();i++){
                 if(v[i]==pos2){
-                    if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
+                    if (i>=v.size()-2 && typeid(*board[pos1])==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
                     {
                      Arrocco(pos1, v[i]);
                         return;
                     }
                     else
                     {
-                        if(typeid(*getPedina(pos1))==typeid(Pedone)){
-                            std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
+                        if(typeid(*board[pos1])==typeid(Pedone)){
+                            std::vector<int> p=dynamic_cast<Pedone*>(board[pos1])->enpassant();
                             for(unsigned int y=0;y<p.size();y++){
                                 if(pos2==p[y]){
                                     Scacchiera* prova=new Scacchiera(*this);

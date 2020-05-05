@@ -18,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     alfiere.cpp \
     cavallo.cpp \
+    chessbutton.cpp \
+    controller.cpp \
     main.cpp \
     mosseacroce.cpp \
     mosseax.cpp \
@@ -30,11 +32,14 @@ SOURCES += \
     torre.cpp
 
 HEADERS += \
+    Mossa_Imposs.h \
+    Mossa_illegale.h \
     alfiere.h \
     cavallo.h \
+    chessbutton.h \
+    controller.h \
     mosseacroce.h \
     mosseax.h \
-    pedone.h \
     pedone.h \
     pezzi.h \
     re.h \
@@ -51,6 +56,19 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+RESOURCES += \
+    resources.qrc
+
 DISTFILES += \
-    ProgettoScacchi.pro.user \
-    ProgettoScacchi.pro.user.3815ac2
+    AlfiereBianco.png \
+    AlfiereNero.png \
+    CavalloBianco.png \
+    CavalloNero.png \
+    PedoneBianco.png \
+    PedoneNero.png \
+    ReBianco.png \
+    ReNero.png \
+    ReginaBianca.png \
+    ReginaNera.png \
+    TorreBianca.png \
+    TorreNera.png
