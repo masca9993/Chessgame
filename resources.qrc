@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Black.css</file>
+        <file>styleWhite.css</file>
+        <file>AlfiereBianco - Copia.png</file>
+        <file>AlfiereBianco.png</file>
+        <file>AlfiereNero - Copia.png</file>
+        <file>AlfiereNero.png</file>
+        <file>CavalloBianco.png</file>
+        <file>CavalloNero - Copia.png</file>
+        <file>CavalloNero.png</file>
+        <file>PedoneBianco.png</file>
+        <file>PedoneNero.png</file>
+        <file>ReBianco.png</file>
+        <file>ReginaBianca.png</file>
+        <file>ReginaNera.png</file>
+        <file>ReNero.png</file>
+        <file>TorreBianca.png</file>
+        <file>TorreNera.png</file>
+    </qresource>
+</RCC>
