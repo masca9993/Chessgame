@@ -32,6 +32,10 @@ SOURCES += \
     torre.cpp
 
 HEADERS += \
+    Arrocco_Exc.h \
+    EnPassant_Exc.h \
+    Mossa_Imposs.h \
+    Mossa_illegale.h \
     alfiere.h \
     cavallo.h \
     chessbutton.h \

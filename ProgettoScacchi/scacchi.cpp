@@ -5,7 +5,7 @@
 #include "controller.h"
 #include <QString>
 
-Scacchi::Scacchi(Controller* p,QWidget *parent) : controller(p), QWidget(parent)
+Scacchi::Scacchi(Controller* p,QWidget *parent) : QWidget(parent), controller(p)
 {
     mainlayout= new QVBoxLayout(this);
     hlayout= new QHBoxLayout();
@@ -35,8 +35,6 @@ void Scacchi::setButtons()
 {
     QPushButton* p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 0)->widget());
     p->setIcon(QIcon(":/TorreNera.png"));
-    QString k="O";
-    p->setText(k);
     p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 1)->widget());
     p->setIcon(QIcon(":/CavalloNero.png"));
     p=static_cast<QPushButton*>(gridlayout->itemAtPosition(0, 2)->widget());
@@ -111,7 +109,7 @@ void Scacchi::addButtons()
        if(i%2!=0){
             for(int y=0;y<8;y++){
                 ChessButton* button=new ChessButton((i*8-56)*-1+y,this);
-                connect(button,SIGNAL(buttonclicked(int)),controller,SLOT(vedimosse(int)));
+                connect(button,SIGNAL(buttonclicked(int, int)),controller,SLOT(ColoraMuovi(int, int)));
                 button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                 if(y%2==0){
                     QFile file(":/styleBlack.css");
@@ -131,7 +129,7 @@ void Scacchi::addButtons()
        else{
            for(int y=0;y<8;y++){
                ChessButton* button=new ChessButton((i*8-56)*-1+y,this);
-               connect(button,SIGNAL(buttonclicked(int)),controller,SLOT(vedimosse(int)));
+               connect(button,SIGNAL(buttonclicked(int, int)),controller,SLOT(ColoraMuovi(int, int)));
                button->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
                if(y%2==0){
                    QFile file(":/styleWhithe.css");

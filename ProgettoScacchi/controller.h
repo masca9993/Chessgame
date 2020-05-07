@@ -13,11 +13,14 @@ public:
     void move();
     void setView(Scacchi* s);
 public slots:
-    void vedimosse(int pos) const;
+ void ColoraMuovi(int r, int pos) const;
 private:
     Scacchiera* scacchiera;
     Scacchi* vista;
     void cancellamosse() const;
+    void vedimosse(int pos) const;
+    void AggiornaIcone(int posi, int posf) const;
+    void EseguiMossa(int posi, int posf) const;
 };
 
 #endif // CONTROLLER_H

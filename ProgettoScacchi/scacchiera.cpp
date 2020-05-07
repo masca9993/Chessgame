@@ -7,6 +7,8 @@
 #include "pedone.h"
 #include "Mossa_Imposs.h"
 #include "Mossa_illegale.h"
+#include "Arrocco_Exc.h"
+#include "EnPassant_Exc.h"
 #include <typeinfo>
 
 Scacchiera::Scacchiera()
@@ -35,8 +37,8 @@ Scacchiera::Scacchiera()
   board.push_back(new Cavallo(0, 62, this));
   board.push_back(new Torre(0, 63, this));
 
-  int posi, posf;
-  int cont=0;
+ // int posi, posf;
+ // int cont=0;
 //  while (1)
 //  {
 //      for (int i=7; i>=0; i--)
@@ -421,81 +423,6 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
-/*
-void Scacchiera::doMove(int pos1, int pos2)
-{
-    if (board[pos1])
-            {
-              std::vector<int> v=board[pos1]->move();
-              for(unsigned int i=0; i<v.size();i++){
-                  if(v[i]==pos2){
-                      if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
-                      {
-                       Arrocco(pos1, v[i]);
-                          return;
-                      }
-
-                      Scacchiera* prova=new Scacchiera(*this);
-                      if(prova->board[pos2])
-                       delete prova->board[pos2];
-                        prova->board[pos2]=prova->board[pos1];
-                        prova->board[pos1]=nullptr;
-                        prova->board[pos2]->setPosizione(pos2);
-                        if (prova->W(board[pos1]->getColore()))
-                            throw Mossa_illegale();
-
-                      if(board[pos2])
-                          delete board[pos2];
-                      board[pos2]=board[pos1];
-                      board[pos1]=nullptr;
-                      board[pos2]->setPosizione(pos2);
-                      if (pos2==pos1+16 || pos2==pos1-16)
-                      {
-                          Pedone* t;
-                          t=dynamic_cast<Pedone*>(board[pos2]);
-                          if (t)
-                          t->setpass(true);
-                      }
-                      return;
-                      }
-              }
-              if(typeid(*getPedina(pos1))==typeid(Pedone)){
-                  std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
-                  for(unsigned int y=0;y<p.size();y++){
-                      if(pos2==p[y]){
-                          Scacchiera* prova=new Scacchiera(*this);
-                          if(prova->board[pos1]->getColore()){
-                              //delete prova->board[pos2-8];
-                              prova->board[pos2-8]=nullptr;
-                          }
-                          else{
-                              //delete prova->board[pos2+8];
-                              prova->board[pos2+8]=nullptr;
-                          }
-                          prova->board[pos2]=prova->board[pos1];
-                          prova->board[pos1]=nullptr;
-                          prova->board[pos2]->setPosizione(pos2);
-                          if (prova->W(board[pos1]->getColore()))
-                              throw Mossa_illegale();
-                          if(board[pos1]->getColore()){
-                              delete board[pos2-8];
-                              board[pos2-8]=nullptr;
-                          }
-                          else{
-                              delete board[pos2+8];
-                              board[pos2+8]=nullptr;
-                          }
-                          board[pos2]=board[pos1];
-                         board[pos1]=nullptr;
-                         board[pos2]->setPosizione(pos2);
-                         return;
-                     }
-                  }
-              }
-  }
-          throw Mossa_Imposs();
-}
-*/
 void Scacchiera::doMove(int pos1, int pos2)
 {
           if (board[pos1])
@@ -506,6 +433,7 @@ void Scacchiera::doMove(int pos1, int pos2)
                     if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
                     {
                      Arrocco(pos1, v[i]);
+                     throw Arrocco_Exc();
                         return;
                     }
                     else
@@ -539,6 +467,7 @@ void Scacchiera::doMove(int pos1, int pos2)
                                     board[pos2]=board[pos1];
                                    board[pos1]=nullptr;
                                    board[pos2]->setPosizione(pos2);
+                                   throw EnPassant_Exc();
                                    return;
                                }
                             }
