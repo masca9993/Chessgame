@@ -42,7 +42,7 @@ std::vector<int> Pedone::move() const
             if(!parent->getStato(pos-8))
                 mossepossibili.push_back(pos-8);
             if((pos%8)!=7 &&parent->getStato(pos-7)==bianco)
-                mossepossibili.push_back(pos+7);
+                mossepossibili.push_back(pos-7);
             if((pos%8)!=0 &&parent->getStato(pos-9)==bianco)
                 mossepossibili.push_back(pos-9);
         }

@@ -14,6 +14,8 @@ public:
     void setView(Scacchi* s);
 public slots:
  void ColoraMuovi(int r, int pos) const;
+ void EseguiPromozione(char t, int p) const;
+ void reset();
 private:
     Scacchiera* scacchiera;
     Scacchi* vista;

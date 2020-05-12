@@ -23,6 +23,7 @@ public:
     Scacchi(Controller* p,QWidget *parent = nullptr);
     ~Scacchi();
     QLayoutItem* getBoardItem(int pos) const;
+    void reset();
 private:
     Controller* controller;
     QVBoxLayout* mainlayout;
@@ -30,8 +31,6 @@ private:
     QGridLayout* gridlayout;
     void addMenu();
     void addButtons();
-public slots:
     void setButtons();
-
 };
 #endif // SCACCHI_H

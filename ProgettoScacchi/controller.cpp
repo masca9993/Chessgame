@@ -3,6 +3,13 @@
 #include "chessbutton.h"
 #include "Arrocco_Exc.h"
 #include "EnPassant_Exc.h"
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QLabel>
+#include "Promozione.h"
+#include "prombutton.h"
+#include <QIcon>
+#include "winner.h"
 Controller::Controller(Scacchiera *s, QObject *p):  QObject(p), scacchiera(s) , vista(nullptr)
 {}
 
@@ -20,14 +27,48 @@ void Controller::ColoraMuovi(int r, int pos) const
         EseguiMossa(r, pos);
 }
 
+void Controller::EseguiPromozione(char t, int p) const
+{
+    scacchiera->Promozione(p, t);
+    QPushButton* f=static_cast<QPushButton*>(vista->getBoardItem(56-(p/8)*8+p%8)->widget());
+    if (!scacchiera->getTurn())
+    {
+        if (t=='r')
+        f->setIcon(QIcon(":/ReginaBianca.png"));
+        if (t=='t')
+        f->setIcon(QIcon(":/TorreBianca.png"));
+        if (t=='a')
+        f->setIcon(QIcon(":/AlfiereBianco.png"));
+        if (t=='c')
+        f->setIcon(QIcon(":/CavalloBianco.png"));
+    }
+    else
+    {
+        if (t=='r')
+        f->setIcon(QIcon(":/ReginaNera.png"));
+        if (t=='t')
+        f->setIcon(QIcon(":/TorreNera.png"));
+        if (t=='a')
+        f->setIcon(QIcon(":/AlfiereNero.png"));
+        if (t=='c')
+        f->setIcon(QIcon(":/CavalloNero.png"));
+    }
+
+}
+
+void Controller::reset()
+{
+    vista->reset();
+    delete scacchiera;
+    //scacchiera=new Scacchiera();
+}
+
 void Controller::vedimosse(int pos) const
 {
-    if(scacchiera->getStato(pos)!=0){
+    if(scacchiera->getTurn()==scacchiera->getStato(pos)-1){
         Pezzi* p=scacchiera->getPedina(pos);
-        std::vector<int> v=p->move();
-        std::cout<<std::endl;
-        for(unsigned int i=0;i<v.size();i++){
-            std::cout<<v[i]<<" ";
+        std::vector<int> v=p->move();       
+        for(unsigned int i=0;i<v.size();i++){            
             ChessButton* c=static_cast<ChessButton*>(vista->getBoardItem(56-(v[i]/8)*8+v[i]%8)->widget());
             QFile file(":/styleselected.css");
             file.open(QFile::ReadOnly);
@@ -98,6 +139,90 @@ void Controller::EseguiMossa(int posi, int posf) const
                  AggiornaIcone(63, 61);
              }
           }
+    }
+    catch (Mossa_illegale)
+    {
+        QDialog* finestra=new QDialog(vista);
+        QVBoxLayout* l=new QVBoxLayout(finestra);
+        l->addWidget(new QLabel("Mossa Illegale"));
+        finestra->show();
+
+    }
+    catch (Mossa_Imposs)
+    {
+        QDialog* finestra=new QDialog(vista);
+        QVBoxLayout* l=new QVBoxLayout(finestra);
+        l->addWidget(new QLabel("Mossa Impossibile"));
+        finestra->show();
+    }
+    catch (promozione)
+    {
+        AggiornaIcone(posi, posf);
+        QDialog* finestra=new QDialog(vista);
+        QVBoxLayout* l=new QVBoxLayout(finestra);
+        finestra->setMinimumSize(QSize(80, 80));
+        if (!scacchiera->getTurn())               //tocca al bianco
+        {
+            PromButton* torre=new PromButton('t', posf, finestra);
+            torre->setIcon(QIcon(":/TorreBianca.png"));
+            connect(torre, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(torre, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* regina=new PromButton('r', posf, finestra);
+            regina->setIcon(QIcon(":/ReginaBianca.png"));
+            connect(regina, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(regina, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* cavallo=new PromButton('c', posf, finestra);
+            cavallo->setIcon(QIcon(":/CavalloBianco.png"));
+            connect(cavallo, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(cavallo, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* alfiere=new PromButton('a', posf, finestra);
+            alfiere->setIcon(QIcon(":/AlfiereBianco.png"));
+            connect(alfiere, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(alfiere, SIGNAL(clicked()), finestra, SLOT(close()));
+            l->addWidget(torre);
+            l->addWidget(regina);
+            l->addWidget(cavallo);
+            l->addWidget(alfiere);
+
+        }
+        else
+        {
+            PromButton* torre=new PromButton('t', posf, finestra);
+            torre->setIcon(QIcon(":/TorreNera.png"));
+            connect(torre, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(torre, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* regina=new PromButton('r', posf, finestra);
+            regina->setIcon(QIcon(":/ReginaNera.png"));
+            connect(regina, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(regina, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* cavallo=new PromButton('c', posf, finestra);
+            cavallo->setIcon(QIcon(":/CavalloNero.png"));
+            connect(cavallo, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(cavallo, SIGNAL(clicked()), finestra, SLOT(close()));
+            PromButton* alfiere=new PromButton('a', posf, finestra);
+            alfiere->setIcon(QIcon(":/AlfiereNero.png"));
+            connect(alfiere, SIGNAL(buttonclicked(char, int)), this, SLOT(EseguiPromozione(char, int)));
+            connect(alfiere, SIGNAL(clicked()), finestra, SLOT(close()));
+            l->addWidget(torre);
+            l->addWidget(regina);
+            l->addWidget(cavallo);
+            l->addWidget(alfiere);
+        }
+        finestra->show();
+    }
+    catch(winner)
+    {
+        QDialog* finestra=new QDialog(vista);
+        QVBoxLayout* l=new QVBoxLayout(finestra);
+        finestra->setMinimumSize(QSize(80, 80));
+        if (scacchiera->getTurn())
+        l->addWidget(new QLabel("Ha vinto il bianco"));
+        else
+        l->addWidget(new QLabel("Ha vinto il nero"));
+        for (int i=0; i<64; i++)
+        static_cast<QPushButton*>(vista->getBoardItem(i)->widget())->setEnabled(false);
+
+        finestra->show();
     }
 
 }

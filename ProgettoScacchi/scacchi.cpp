@@ -96,7 +96,7 @@ void Scacchi::addMenu()
     QAction* reset= new QAction("Reset",menu);
     QAction* exit = new QAction("Exit",menu);
     connect(exit,SIGNAL(triggered()),this,SLOT(close()));
-    connect(reset,SIGNAL(triggered()),this,SLOT(setButtons()));
+    connect(reset,SIGNAL(triggered()),controller,SLOT(reset()));
     menubar->addMenu(menu);
     menu->addAction(reset);
     menu->addAction(exit);
@@ -148,3 +148,11 @@ void Scacchi::addButtons()
        }
     }
 }
+
+void Scacchi::reset()
+{
+    setButtons();
+    for (int i=0; i<64; i++)
+    static_cast<QPushButton*>(getBoardItem(i)->widget())->setEnabled(true);
+}
+

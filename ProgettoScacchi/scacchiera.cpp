@@ -10,8 +10,10 @@
 #include "Arrocco_Exc.h"
 #include "EnPassant_Exc.h"
 #include <typeinfo>
+#include "Promozione.h"
+#include "winner.h"
 
-Scacchiera::Scacchiera()
+Scacchiera::Scacchiera(bool t) : turn(t)
 {
 
   board.push_back(new Torre(1, 0, this));
@@ -87,8 +89,7 @@ Scacchiera::Scacchiera()
 //         {
 //             if(Winner(0)==bianco)
 //             {
-//              std::cout<<"ha vinto il bianco";
-//             break;
+
 //             }
 //         }
 
@@ -126,8 +127,7 @@ Scacchiera::Scacchiera()
 //         {
 //             if(Winner(1)==nero)
 //             {
-//               std::cout<<"ha vinto il nero";
-//             break;
+
 //             }
 //         }
 //      }
@@ -187,6 +187,11 @@ Scacchiera::Scacchiera(const Scacchiera &s)
             board[i]->setParent(this);
         }
     }
+}
+
+bool Scacchiera::getTurn() const
+{
+    return turn;
 }
 
 giocatore Scacchiera::getStato(int pos) const
@@ -388,9 +393,42 @@ void Scacchiera::Promozione(const int& pos, const char& pezzo)
         else
         board[pos]=new Cavallo(1, pos, this);
     }
+
+}
+
+void Scacchiera::cambiaturno(int posf)
+{
+    if (W(!turn))
+    {
+        if(Winner(!turn)!=none)
+         {
+          throw winner();
+         }
+    }
+    turn=!turn;
+    if (!turn)
+    {
+    for (int i=0; i<8; i++)
+      {
+      Pedone* t;
+      t=dynamic_cast<Pedone*>(board[32+i]);
+       if (t)
+        t->setpass(false);
+       }
+    if (typeid(*board[posf])==typeid(Pedone) && posf>=56)
+        throw promozione();
+    }
     else
     {
-        throw Mossa_Imposs();
+        for (int i=0; i<8; i++)
+          {
+          Pedone* t;
+          t=dynamic_cast<Pedone*>(board[24+i]);
+           if (t)
+            t->setpass(false);
+           }
+        if (typeid(*board[posf])==typeid(Pedone) && posf<=7)
+            throw promozione();
     }
 
 }
@@ -425,7 +463,7 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 void Scacchiera::doMove(int pos1, int pos2)
 {
-          if (board[pos1])
+          if (board[pos1]->getColore()==turn)
           {
             std::vector<int> v=board[pos1]->move();
             for(unsigned int i=0; i<v.size();i++){
@@ -436,8 +474,8 @@ void Scacchiera::doMove(int pos1, int pos2)
                      for(unsigned int y=0;y<p.size();y++){
                          if(pos2==p[y]){
                              Arrocco(pos1, v[i]);
+                             cambiaturno(pos2);
                              throw Arrocco_Exc();
-                                return;
                              }
                     }
                     }
@@ -471,8 +509,8 @@ void Scacchiera::doMove(int pos1, int pos2)
                                     board[pos2]=board[pos1];
                                    board[pos1]=nullptr;
                                    board[pos2]->setPosizione(pos2);
+                                   cambiaturno(pos2);
                                    throw EnPassant_Exc();
-                                   return;
                                }
                             }
                         }
@@ -490,6 +528,7 @@ void Scacchiera::doMove(int pos1, int pos2)
                     board[pos2]=board[pos1];
                     board[pos1]=nullptr;
                     board[pos2]->setPosizione(pos2);
+                    cambiaturno(pos2);
                     return;
                     }
 
