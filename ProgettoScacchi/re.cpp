@@ -217,7 +217,6 @@ std::vector<int> Re::move() const
      }
 
  }
-  //inserisco in arrocco prima l'arrocco lungo poi l'arrocco corto, e inserisco arrocco alla fine di mossepossibili, altrimenti metto -1;
  if (colore)
  {
      Torre* t=nullptr;
@@ -225,15 +224,12 @@ std::vector<int> Re::move() const
      t=dynamic_cast<Torre*>(parent->getPedina(0));
      if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
          mossepossibili.push_back(pos-2);
-     else
-         mossepossibili.push_back(-1);
      t=nullptr;
      if (parent->getStato(7)==bianco)
       t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !check && !moved)
           mossepossibili.push_back(pos+2);
-     else
-         mossepossibili.push_back(-1);
+
  }
  else  //nero
  {   Torre* t=nullptr;
@@ -241,15 +237,12 @@ std::vector<int> Re::move() const
      t=dynamic_cast<Torre*>(parent->getPedina(56));
      if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
          mossepossibili.push_back(pos-2);
-        else
-         mossepossibili.push_back(-1);
+
      t=nullptr;
      if (parent->getStato(63)==nero)
      t=dynamic_cast<Torre*>(parent->getPedina(63));   //arrocco a destra
      if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !check && !moved)
          mossepossibili.push_back(pos+2);
-        else
-         mossepossibili.push_back(-1);
  }
  return mossepossibili;
 }
@@ -269,5 +262,39 @@ void Re::setPosizione(int p)
 {
     pos=p;
     if(!moved)
-    moved=true;
+        moved=true;
+}
+
+std::vector<int> Re::MoveArrocco() const
+{
+
+    std::vector<int> mossepossibili;
+   if (colore)
+   {
+       Torre* t=nullptr;
+       if (parent->getStato(0)==bianco)
+       t=dynamic_cast<Torre*>(parent->getPedina(0));
+       if (t && !t->hasmoved() && parent->getStato(1)==none && parent->getStato(2)==none && parent->getStato(3)==none && !check && !moved) //arrocco a sinistra
+           mossepossibili.push_back(pos-2);
+       t=nullptr;
+       if (parent->getStato(7)==bianco)
+        t=dynamic_cast<Torre*>(parent->getPedina(7));   //arrocco a destra
+       if (t && !t->hasmoved() && parent->getStato(5)==none && parent->getStato(6)==none && !check && !moved)
+            mossepossibili.push_back(pos+2);
+
+   }
+   else  //nero
+   {   Torre* t=nullptr;
+       if (parent->getStato(56)==nero)
+       t=dynamic_cast<Torre*>(parent->getPedina(56));
+       if (t && !t->hasmoved() && parent->getStato(57)==none && parent->getStato(58)==none && parent->getStato(59)==none && !check && !moved) //arrocco a sinistra
+           mossepossibili.push_back(pos-2);
+
+       t=nullptr;
+       if (parent->getStato(63)==nero)
+       t=dynamic_cast<Torre*>(parent->getPedina(63));   //arrocco a destra
+       if (t && !t->hasmoved() && parent->getStato(61)==none && parent->getStato(62)==none && !check && !moved)
+           mossepossibili.push_back(pos+2);
+   }
+   return mossepossibili;
 }

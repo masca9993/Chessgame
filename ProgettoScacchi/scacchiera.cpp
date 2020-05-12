@@ -430,14 +430,18 @@ void Scacchiera::doMove(int pos1, int pos2)
             std::vector<int> v=board[pos1]->move();
             for(unsigned int i=0; i<v.size();i++){
                 if(v[i]==pos2){
-                    if (i>=v.size()-2 && typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
+                    if (typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
                     {
-                     Arrocco(pos1, v[i]);
-                     throw Arrocco_Exc();
-                        return;
+                     std::vector<int> p=dynamic_cast<Re*>(getPedina(pos1))->MoveArrocco();
+                     for(unsigned int y=0;y<p.size();y++){
+                         if(pos2==p[y]){
+                             Arrocco(pos1, v[i]);
+                             throw Arrocco_Exc();
+                                return;
+                             }
                     }
-                    else
-                    {
+                    }
+
                         if(typeid(*getPedina(pos1))==typeid(Pedone)){
                             std::vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
                             for(unsigned int y=0;y<p.size();y++){
@@ -488,7 +492,7 @@ void Scacchiera::doMove(int pos1, int pos2)
                     board[pos2]->setPosizione(pos2);
                     return;
                     }
-               }
+
             }
 }
         throw Mossa_Imposs();

@@ -12,6 +12,7 @@ public:
     bool check=false;
     Re* clone() const;
    void setPosizione(int p);
+    std::vector<int> MoveArrocco() const;
     private:
     bool moved=false;
 };
