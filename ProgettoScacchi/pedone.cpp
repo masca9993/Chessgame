@@ -7,6 +7,7 @@ std::vector<int> Pedone::move() const
     std::vector<int> mossepossibili;
     //sx e dx guardando il pedone
     if(colore){//se il colore Ăš bianco sommo, e la mossa +7 va in diagonale a sinistra, mentre, +9 va in diagonale a destra
+        if(pos<56){
         if(!firstmove){
             if(!parent->getStato(pos+8))
                 mossepossibili.push_back(pos+8);
@@ -20,14 +21,16 @@ std::vector<int> Pedone::move() const
         else{
             if(!parent->getStato(pos+8))
                 mossepossibili.push_back(pos+8);
-            if((pos%8)!=0 &&parent->getStato(pos+7)==nero)
+            if((pos%8)!=0 && parent->getStato(pos+7)==nero)
                 mossepossibili.push_back(pos+7);
-            if((pos%8)!=7 &&parent->getStato(pos+9)==nero)
+            if((pos%8)!=7 && parent->getStato(pos+9)==nero)
                 mossepossibili.push_back(pos+9);
+        }
         }
     }
     else{
         //se il colore Ăš nero, la mossa -7 va in diagole a sinistra, mentre -9 va in diagonale a destra
+        if(pos>7){
         if(!firstmove){
             if(!parent->getStato(pos-8))
                 mossepossibili.push_back(pos-8);
@@ -41,10 +44,11 @@ std::vector<int> Pedone::move() const
         else{
             if(!parent->getStato(pos-8))
                 mossepossibili.push_back(pos-8);
-            if((pos%8)!=7 &&parent->getStato(pos-7)==bianco)
+            if((pos%8)!=7 && parent->getStato(pos-7)==bianco)
                 mossepossibili.push_back(pos-7);
-            if((pos%8)!=0 &&parent->getStato(pos-9)==bianco)
+            if((pos%8)!=0 && parent->getStato(pos-9)==bianco)
                 mossepossibili.push_back(pos-9);
+        }
         }
     }
     std::vector<int> v=enpassant();
