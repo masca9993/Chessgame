@@ -23,6 +23,7 @@ private:
     void vedimosse(int pos) const;
     void AggiornaIcone(int posi, int posf) const;
     void EseguiMossa(int posi, int posf) const;
+    void mostravincitore() const;
 };
 
 #endif // CONTROLLER_H

@@ -393,18 +393,24 @@ void Scacchiera::Promozione(const int& pos, const char& pezzo)
         else
         board[pos]=new Cavallo(1, pos, this);
     }
-
-}
-
-void Scacchiera::cambiaturno(int posf)
-{
-    if (W(!turn))
+    if (W(turn))
     {
-        if(Winner(!turn)!=none)
+        if(Winner(turn)!=none)
          {
           throw winner();
          }
     }
+}
+
+void Scacchiera::cambiaturno(int posf)
+{
+//    if (W(!turn))
+//    {
+//        if(Winner(!turn)!=none)
+//         {
+//          throw winner();
+//         }
+//    }
     turn=!turn;
     if (!turn)
     {
@@ -430,7 +436,13 @@ void Scacchiera::cambiaturno(int posf)
         if (typeid(*board[posf])==typeid(Pedone) && posf<=7)
             throw promozione();
     }
-
+    if (W(turn))
+    {
+        if(Winner(turn)!=none)
+         {
+          throw winner();
+         }
+    }
 }
 
 
@@ -461,11 +473,16 @@ giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, per
 
 }
 
+#include <iostream>
+
 void Scacchiera::doMove(int pos1, int pos2)
 {
           if (board[pos1]->getColore()==turn)
           {
             std::vector<int> v=board[pos1]->move();
+            for(int i=0;i<v.size();i++)
+                std::cout<<v[i]<<" ";
+            std::cout<<std::endl;
             for(unsigned int i=0; i<v.size();i++){
                 if(v[i]==pos2){
                     if (typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco

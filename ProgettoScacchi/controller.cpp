@@ -29,7 +29,6 @@ void Controller::ColoraMuovi(int r, int pos) const
 
 void Controller::EseguiPromozione(char t, int p) const
 {
-    scacchiera->Promozione(p, t);
     QPushButton* f=static_cast<QPushButton*>(vista->getBoardItem(56-(p/8)*8+p%8)->widget());
     if (!scacchiera->getTurn())
     {
@@ -53,14 +52,19 @@ void Controller::EseguiPromozione(char t, int p) const
         if (t=='c')
         f->setIcon(QIcon(":/CavalloNero.png"));
     }
-
+    try{
+        scacchiera->Promozione(p, t);
+    }
+    catch(winner){
+        mostravincitore();
+    }
 }
 
 void Controller::reset()
 {
     vista->reset();
-    delete scacchiera;
-    //scacchiera=new Scacchiera();
+    //delete scacchiera;
+    scacchiera=new Scacchiera();
 }
 
 void Controller::vedimosse(int pos) const
@@ -209,22 +213,27 @@ void Controller::EseguiMossa(int posi, int posf) const
             l->addWidget(alfiere);
         }
         finestra->show();
+
     }
     catch(winner)
     {
-        QDialog* finestra=new QDialog(vista);
-        QVBoxLayout* l=new QVBoxLayout(finestra);
-        finestra->setMinimumSize(QSize(80, 80));
-        if (scacchiera->getTurn())
-        l->addWidget(new QLabel("Ha vinto il bianco"));
-        else
-        l->addWidget(new QLabel("Ha vinto il nero"));
-        for (int i=0; i<64; i++)
-        static_cast<QPushButton*>(vista->getBoardItem(i)->widget())->setEnabled(false);
-
-        finestra->show();
+        mostravincitore();
     }
 
+}
+
+void Controller::mostravincitore() const
+{
+    QDialog* finestra=new QDialog(vista);
+    QVBoxLayout* l=new QVBoxLayout(finestra);
+    finestra->setMinimumSize(QSize(80, 80));
+    if (!scacchiera->getTurn())
+    l->addWidget(new QLabel("Ha vinto il bianco"));
+    else
+    l->addWidget(new QLabel("Ha vinto il nero"));
+    for (int i=0; i<64; i++)
+    static_cast<QPushButton*>(vista->getBoardItem(i)->widget())->setEnabled(false);
+    finestra->show();
 }
 
 void Controller::cancellamosse() const

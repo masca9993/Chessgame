@@ -25,17 +25,20 @@ SOURCES += \
     mosseax.cpp \
     pedone.cpp \
     pezzi.cpp \
+    prombutton.cpp \
     re.cpp \
     regina.cpp \
     scacchi.cpp \
     scacchiera.cpp \
-    torre.cpp
+    torre.cpp \
+    vector.cpp
 
 HEADERS += \
     Arrocco_Exc.h \
     EnPassant_Exc.h \
     Mossa_Imposs.h \
     Mossa_illegale.h \
+    Promozione.h \
     alfiere.h \
     cavallo.h \
     chessbutton.h \
@@ -45,11 +48,14 @@ HEADERS += \
     pedone.h \
     pedone.h \
     pezzi.h \
+    prombutton.h \
     re.h \
     regina.h \
     scacchi.h \
     scacchiera.h \
-    torre.h
+    torre.h \
+    vector.h \
+    winner.h
 
 FORMS += \
     scacchi.ui
@@ -60,6 +66,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    AlfiereBianco - Copia.png \
+    AlfiereBianco.png \
+    AlfiereNero - Copia.png \
+    AlfiereNero.png \
     ProgettoScacchi.pro.user \
     ProgettoScacchi.pro.user.3815ac2
 
