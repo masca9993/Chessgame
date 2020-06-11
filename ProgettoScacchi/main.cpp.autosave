@@ -29,7 +29,8 @@ int main(int argc, char *argv[])
 //    vector<int>::iterator g=s.begin();
 
 
-    std::vector<int> s;
+  
+//    std::vector<int> s;
 //    for(unsigned int i=0;i<10;i++)
 //        s.push_back(i);
 //    for(unsigned int i=0;i<s.size();i++)

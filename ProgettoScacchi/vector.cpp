@@ -80,18 +80,24 @@ void vector<T>::push_back(const T &p)
     size++;
 }
 
-//template<class T>
-//T vector<T>::popBack()
-//{
-//    if(size){
-//       T b=a[size-1];
-//       delete a[size-1];
-//       --size;
-//       return b;
-//     }
-//     else
-//        return 0;
-//}
+template<class T>
+T vector<T>::popBack()
+{
+    if(size){
+        T tmp=a[size];
+        if(size<=(capacity/2))
+            capacity=capacity/2;
+       T* b= new T[capacity];
+       for(unsigned int i=0;i<size-1; i++)
+           b[i]=a[i];
+       delete [] a;
+       --size;
+       a=b;
+       return tmp;
+     }
+     else
+        return 0;
+}
 
 template<class T>
 bool vector<T>::operator==(const vector &r) const
@@ -123,16 +129,12 @@ vector<T> vector<T>::operator+(const vector &v)
 template<class T>
 typename vector<T>::iterator vector<T>::begin() const
 {
-    //T* b =copy();
-    //b[size]=a[size];
     return iterator(&a[0]);
 }
 
 template<class T>
 typename vector<T>::iterator vector<T>::end() const
 {
-    //T* b=new T(a[size]);
-    //b++;
     return iterator(&a[size]);
 }
 
@@ -209,3 +211,61 @@ typename vector<T>::iterator &vector<T>::iterator::operator=(const vector::itera
 template class vector<int>;
 template class vector<Pezzi*>;
 template class vector<Alfiere*>;
+
+template<class T>
+vector<T>::const_iterator::const_iterator(const T* n): ptr(n) {}
+
+template<class T>
+typename vector<T>::const_iterator& vector<T>::const_iterator::operator++()
+{
+   if(ptr)
+      ++ptr;
+   return *this;
+}
+
+template<class T>
+const T &vector<T>::const_iterator::operator*() const
+{
+    return *ptr;
+}
+
+template<class T>
+const T &vector<T>::const_iterator::operator[](vector::const_iterator i)
+{
+    return *i.ptr;
+}
+
+
+
+template<class T>
+bool vector<T>::const_iterator::operator==(const vector::const_iterator &x)
+{
+    return ptr==x.ptr;
+}
+
+template<class T>
+bool vector<T>::const_iterator::operator!=(const vector::const_iterator &x)
+{
+    return ptr!=x.ptr;
+}
+
+
+template<class T>
+vector<T>::const_iterator::const_iterator(const vector::const_iterator &n): ptr(n.ptr)
+{
+
+}
+
+template<class T>
+typename vector<T>::const_iterator vector<T>::const_iterator::operator++(int)
+{
+    const_iterator tmp(*this);
+    operator++();
+    return tmp;
+}
+
+template<class T>
+vector<T>::const_iterator::const_iterator(const vector::iterator &n): ptr(n.ptr)
+{
+
+}
