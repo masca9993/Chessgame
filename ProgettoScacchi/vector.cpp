@@ -199,6 +199,22 @@ typename vector<T>::iterator vector<T>::iterator::operator++(int)
 }
 
 template<class T>
+typename vector<T>::iterator &vector<T>::iterator::operator--()
+{
+    if(ptr)
+       --ptr;
+    return *this;
+}
+
+template<class T>
+typename vector<T>::iterator vector<T>::iterator::operator--(int)
+{
+    iterator tmp(*this);
+    operator--();
+    return tmp;
+}
+
+template<class T>
 typename vector<T>::iterator &vector<T>::iterator::operator=(const vector::iterator &p)
 {
     if(this!=&p){
@@ -265,7 +281,24 @@ typename vector<T>::const_iterator vector<T>::const_iterator::operator++(int)
 }
 
 template<class T>
+typename vector<T>::const_iterator &vector<T>::const_iterator::operator--()
+{
+    if(ptr)
+       --ptr;
+    return *this;
+}
+
+template<class T>
+typename vector<T>::const_iterator vector<T>::const_iterator::operator--(int)
+{
+    const_iterator tmp(*this);
+    operator--();
+    return tmp;
+}
+
+template<class T>
 vector<T>::const_iterator::const_iterator(const vector::iterator &n): ptr(n.ptr)
 {
 
 }
+
