@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>Black.css</file>
-        <file>styleWhite.css</file>
         <file>AlfiereBianco - Copia.png</file>
         <file>AlfiereBianco.png</file>
         <file>AlfiereNero - Copia.png</file>
@@ -17,5 +15,8 @@
         <file>ReNero.png</file>
         <file>TorreBianca.png</file>
         <file>TorreNera.png</file>
+        <file>styleBlack.css</file>
+        <file>styleWhithe.css</file>
+        <file>styleselected.css</file>
     </qresource>
 </RCC>
