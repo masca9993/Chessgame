@@ -15,20 +15,20 @@ public:
     Pezzi* getPedina(int pos) const;  //ritorna un puntatore al pezzo che risiede nela casella pos
     ~Scacchiera();
     void Promozione(const int& pos, const char& pezzo);
-    giocatore Winner(bool p);
-    bool W(bool p) const;  // p è il colore del re di cui si vuole controllare lo scacco
-    void doMove(int pos1, int pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
+    giocatore Winner(const bool& p);
+    bool W(const bool& p) const;  // p è il colore del re di cui si vuole controllare lo scacco
+    void doMove(const int& pos1,const int& pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
 private:
     static int caselle;
     vector<Pezzi*> board;
     bool turn;   //false=turno del nero, true bianco
-    vector<int> Mosse(bool g) const;
-    void Arrocco(int pos1, int pos2);
-    void Enpassant(int pos1, int pos2);
-    void cambiaturno(int posf);
+    vector<int> Mosse(const bool& g) const;
+    void Arrocco(const int& pos1, const int& pos2);
+    void Enpassant(const int& pos1, const int& pos2);
+    void cambiaturno(const int& posf);
 };
 
-int Scacchiera::caselle=63;
+
 
 #endif // SCACCHIERA_H
 

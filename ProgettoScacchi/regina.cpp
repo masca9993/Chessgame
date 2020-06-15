@@ -10,7 +10,7 @@ vector<int> Regina::move() const
     vector<int> mossepossibili=mosseacroce::move();
     vector<int> mossealfiere=Mosseax::move();
     //mossepossibili.insert(mossepossibili.begin(),mossealfiere.begin(),mossealfiere.end());
-    mossepossibili=mssepossibili+mossealfiere;
+    mossepossibili=mossepossibili+mossealfiere;
     return mossepossibili;
 }
 

@@ -18,6 +18,9 @@ int main(int argc, char *argv[])
     c.setView(&v);
     v.show();
     return a.exec();
+
+//     Scacchiera* s=new Scacchiera();
+//     delete s;
 //    vector<int> s;
 //    for(int i=0; i<10;i++)//se parte da 1 funziona mentre se parte da zero no perche pensa che sia l'ultimo elemento cioè s.end()==s[0] visto che entrambi sono 0
 //        s.push_back(i);
@@ -29,7 +32,8 @@ int main(int argc, char *argv[])
 //    vector<int>::iterator g=s.begin();
 
 
-    std::vector<int> s;
+  
+//    std::vector<int> s;
 //    for(unsigned int i=0;i<10;i++)
 //        s.push_back(i);
 //    for(unsigned int i=0;i<s.size();i++)

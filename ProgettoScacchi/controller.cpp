@@ -63,7 +63,7 @@ void Controller::EseguiPromozione(char t, int p) const
 void Controller::reset()
 {
     vista->reset();
-    //delete scacchiera;
+    delete scacchiera;
     scacchiera=new Scacchiera();
 }
 

@@ -13,7 +13,9 @@
 #include "Promozione.h"
 #include "winner.h"
 
-Scacchiera::Scacchiera(bool t) : turn(t) , board(caselle,nullptr)
+int Scacchiera::caselle=64;
+
+Scacchiera::Scacchiera(bool t) : board(caselle,nullptr), turn(t)
 {
 
   board[0]=new Torre(1, 0, this);
@@ -26,8 +28,6 @@ Scacchiera::Scacchiera(bool t) : turn(t) , board(caselle,nullptr)
   board[7]=new Torre(1, 7, this);
   for (int i=0; i<8; i++)
     board[8+i]=new Pedone(1, 8+i, this);
-  //for (int i=0; i<32; i++)
-  //board.push_back(nullptr);
   for (int i=0; i<8; i++)
     board[48+i]=new Pedone(0, 48+i, this);
   board[56]=new Torre(0, 56, this);
@@ -42,13 +42,13 @@ Scacchiera::Scacchiera(bool t) : turn(t) , board(caselle,nullptr)
 
 Scacchiera::Scacchiera(const Scacchiera &s) : board(caselle,nullptr)
 {
-    for (int i=0; i<64; i++)
+    for (vector<Pezzi*>::iterator it=s.board.begin(); it!=s.board.end(); it++)
     {
         //board.push_back(nullptr);    //inizializzo ogni casella a nullptr
-        if (s.board[i])     // se nella scacchiera da copiare allora copio lo stesso pezzo in this
+        if (*it)     // se nella scacchiera da copiare allora copio lo stesso pezzo in this
         {
-            board[i]=s.board[i]->clone();
-            board[i]->setParent(this);
+            board[(*it)->getPosizione()]=(*it)->clone();
+            board[(*it)->getPosizione()]->setParent(this);
         }
     }
 }
@@ -78,19 +78,17 @@ Pezzi* Scacchiera::getPedina(int pos) const
 
 Scacchiera::~Scacchiera()
 {
-    for (int i=0; i<64; i++)
-    {
-        delete board[i];
-    }
+    for (vector<Pezzi*>::const_iterator i=board.begin(); i!=board.end();i++)
+        delete *i;
 }
 
-bool Scacchiera::W(bool p) const  //funzione che verifica se c'è uno scacco al giocatore p
+bool Scacchiera::W(const bool& p) const  //funzione che verifica se c'è uno scacco al giocatore p
 {
     int re_pos;
-  for (unsigned int i=0; i<64; i++)
+  for (vector<Pezzi*>::const_iterator it=board.begin(); it!=board.end();it++)
   {
-     if (board[i] && board[i]->getColore()==p && dynamic_cast<Re*>(board[i])!=nullptr)  //cerco il re
-     re_pos=i;
+     if (*it && (*it)->getColore()==p && dynamic_cast<Re*>(*it)!=nullptr)  //cerco il re
+     re_pos=(*it)->getPosizione();
   }
   vector<int> v;
   if (p)          //salvo tutte le mosse possibili dell'avversario
@@ -98,31 +96,30 @@ bool Scacchiera::W(bool p) const  //funzione che verifica se c'è uno scacco al 
    else
    v=Mosse(1);
 
-  for (unsigned int i=0; i<v.getSize(); i++)   //se nelle mosse possibili dell'avversario c'è la posizione del re allora ritorno vero
+  for (vector<int>::const_iterator it=v.begin(); it!=v.end();it++)   //se nelle mosse possibili dell'avversario c'è la posizione del re allora ritorno vero
   {
-      if (v[i]==re_pos)
+      if (*it==re_pos)
           return true;
   }
    return false;    //se esco dal ciclo senza ritornare nulla allora ritorno falso
 }
 
-vector<int> Scacchiera::Mosse(bool g) const
+vector<int> Scacchiera::Mosse(const bool& g) const
 {
     vector<int> mossetot;
-    for (int i=0; i<64; i++)
+    for (vector<Pezzi*>::const_iterator i=board.begin(); i!=board.end();i++)
     {
-        if (board[i] && board[i]->getColore()==g)
+        if (*i && (*i)->getColore()==g)
         {
             vector<int> t;
-            t=board[i]->move();
-            //mossetot.insert(mossetot.end(), t.begin(), t.end());
+            t=(*i)->move();
             mossetot=mossetot+t;
         }
     }
     return mossetot;
 }
 
-void Scacchiera::Arrocco(int pos1, int pos2)
+void Scacchiera::Arrocco(const int& pos1, const int& pos2)
 {
       if (pos1==4)       //re bianco
       {
@@ -269,7 +266,7 @@ void Scacchiera::Promozione(const int& pos, const char& pezzo)
     }
 }
 
-void Scacchiera::cambiaturno(int posf)
+void Scacchiera::cambiaturno(const int& posf)
 {
     turn=!turn;
     if (!turn)
@@ -296,52 +293,54 @@ void Scacchiera::cambiaturno(int posf)
         if (typeid(*board[posf])==typeid(Pedone) && posf<=7)
             throw promozione();
     }
+    std::cout<<"1";
     if (W(turn))
     {
+        std::cout<<"2";
         if(Winner(turn)!=none)
          {
+            std::cout<<"3";
           throw winner();
          }
     }
 }
 
 
-giocatore Scacchiera::Winner(bool p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
+giocatore Scacchiera::Winner(const bool& p)   //ipotizzo che il re sia sottoscacco, perche winner viene chiamata solo se dopo una mossa il re è sottoscacco
 {
-       for (int j=0; j<64; j++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
-        {
-         if (board[j] && board[j]->getColore()==p)
-          {
-             vector<int> mosse=board[j]->move();
-         for (unsigned int i=0; i<mosse.getSize(); i++)
-         {
-           // std::cout<<j<<" "<<mosse[i]<<std::endl;
-             if (mosse[i]!=-1)
-             {
-            Scacchiera* prova=new Scacchiera(*this);
-            if (prova->board[mosse[i]])
-            delete prova->board[mosse[i]];
-           prova->board[mosse[i]]=prova->board[j];
-           prova->board[j]=nullptr;
-            if(!prova->W(p))
-            return none;
-             }
-         }
-         }
-    }
-      return p ? nero : bianco;
+    for (int it=0; it<caselle;it++)   // scorro la scacchiera, se trovo un pezzo bianco salvo le sue mosse e le simulo nel for annidato
+     {
+      if (board[it] && board[it]->getColore()==p)
+       {
 
+          vector<int> mosse=board[it]->move();
+      for (vector<int>::const_iterator i=mosse.begin(); i!=mosse.end();i++)
+      {
+         Scacchiera* prova=new Scacchiera(*this);
+         if (prova->board[*i])
+         delete prova->board[*i];
+        prova->board[*i]=prova->board[it];
+        prova->board[it]=nullptr;
+        prova->board[*i]->setPosizione(*i);
+         if(!prova->W(p)){
+            std::cout<<it<<"  "<<*i;
+             return none;
+         }
+      }
+      }
+ }
+   return p ? nero : bianco;
 }
 
-void Scacchiera::Enpassant(int pos1, int pos2)
+void Scacchiera::Enpassant(const int& pos1, const int& pos2)
 {
     Scacchiera* prova=new Scacchiera(*this);
     if(prova->board[pos1]->getColore()){
-        //delete prova->board[pos2-8];
+        delete prova->board[pos2-8];
         prova->board[pos2-8]=nullptr;
     }
     else{
-        //delete prova->board[pos2+8];
+        delete prova->board[pos2+8];
         prova->board[pos2+8]=nullptr;
     }
     prova->board[pos2]=prova->board[pos1];
@@ -363,19 +362,19 @@ void Scacchiera::Enpassant(int pos1, int pos2)
    cambiaturno(pos2);
 }
 
-void Scacchiera::doMove(int pos1, int pos2)
+void Scacchiera::doMove(const int& pos1,const int& pos2)
 {
           if (board[pos1]->getColore()==turn)
           {
             vector<int> v=board[pos1]->move();
-            for(unsigned int i=0; i<v.getSize();i++){
-                if(v[i]==pos2){
+            for(vector<int>::const_iterator i=v.begin(); i!=v.end();i++){
+                if(*i==pos2){
                     if (typeid(*getPedina(pos1))==typeid(Re)) //se devo muovere il re e la mossa è nelle ultime due posizioni devo fare l'arrocco
                     {
                          vector<int> p=dynamic_cast<Re*>(getPedina(pos1))->MoveArrocco();
-                         for(unsigned int y=0;y<p.size();y++){
-                             if(pos2==p[y]){
-                                 Arrocco(pos1, v[i]);
+                         for(vector<int>::const_iterator y=p.begin(); y!=p.end();y++){
+                             if(pos2==*y){
+                                 Arrocco(pos1, *i);
                                  cambiaturno(pos2);
                                  throw Arrocco_Exc();
                                  }
@@ -383,8 +382,8 @@ void Scacchiera::doMove(int pos1, int pos2)
                     }
                     if(typeid(*getPedina(pos1))==typeid(Pedone)){
                         vector<int> p=dynamic_cast<Pedone*>(getPedina(pos1))->enpassant();
-                            for(unsigned int y=0;y<p.getSize();y++){
-                                if(pos2==p[y]){
+                            for(vector<int>::const_iterator y=p.begin(); y!=p.end();y++){
+                                if(pos2==*y){
                                     Enpassant(pos1,pos2);
                                     throw EnPassant_Exc();
                                }
