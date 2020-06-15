@@ -71,8 +71,8 @@ void Controller::vedimosse(int pos) const
 {
     if(scacchiera->getTurn()==scacchiera->getStato(pos)-1){
         Pezzi* p=scacchiera->getPedina(pos);
-        std::vector<int> v=p->move();       
-        for(unsigned int i=0;i<v.size();i++){            
+        vector<int> v=p->move();
+        for(unsigned int i=0;i<v.getSize();i++){
             ChessButton* c=static_cast<ChessButton*>(vista->getBoardItem(56-(v[i]/8)*8+v[i]%8)->widget());
             QFile file(":/styleselected.css");
             file.open(QFile::ReadOnly);
@@ -101,47 +101,36 @@ void Controller::EseguiMossa(int posi, int posf) const
     }
         catch (EnPassant_Exc)
     {
+        AggiornaIcone(posi, posf);
         if (posi<posf)  //il bianco muove
          {
-            AggiornaIcone(posi, posf);
             QPushButton* t=static_cast<QPushButton*>(vista->getBoardItem(56-((posf-8)/8)*8+(posf-8)%8)->widget());
             t->setIcon(QIcon(" "));
 
          }
         else
         {
-            AggiornaIcone(posi, posf);
             QPushButton* t=static_cast<QPushButton*>(vista->getBoardItem(56-((posf+8)/8)*8+(posf+8)%8)->widget());
             t->setIcon(QIcon(" "));
         }
     }
     catch (Arrocco_Exc)
     {
+        AggiornaIcone(posi, posf);
           if (posi==4)     //re bianco
           {
-              if (posf==2)     //sinistra
-              {
-                AggiornaIcone(posi, posf);
-                AggiornaIcone(0, 3);
-              }
-              else             //destra
-               {
-                  AggiornaIcone(posi, posf);
-                  AggiornaIcone(7, 5);
-              }
+              if (posf==2)     //sinistra        
+                AggiornaIcone(0, 3);     
+              else             //destra                       
+                AggiornaIcone(7, 5);
           }
           else             //re nero
           {
-             if (posf==58)    //destra
-             {
-                 AggiornaIcone(posi, posf);
+             if (posf==58)    //destra                        
                  AggiornaIcone(56, 59);
-             }
-             else             //sinistra
-             {
-                 AggiornaIcone(posi, posf);
-                 AggiornaIcone(63, 61);
-             }
+
+             else             //sinistra                
+                 AggiornaIcone(63, 61);       
           }
     }
     catch (Mossa_illegale)
@@ -217,6 +206,7 @@ void Controller::EseguiMossa(int posi, int posf) const
     }
     catch(winner)
     {
+        AggiornaIcone(posi, posf);
         mostravincitore();
     }
 

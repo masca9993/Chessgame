@@ -3,10 +3,10 @@
 Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent), check(ch), moved(m)
 {}
 
-std::vector<int> Re::move() const
+vector<int> Re::move() const
 
 {
- std::vector<int> mossepossibili;
+ vector<int> mossepossibili;
  if (colore)
  {
  if (pos==0) //sono in basso a sinistra
@@ -265,10 +265,10 @@ void Re::setPosizione(int p)
         moved=true;
 }
 
-std::vector<int> Re::MoveArrocco() const
+vector<int> Re::MoveArrocco() const
 {
 
-    std::vector<int> mossepossibili;
+   vector<int> mossepossibili;
    if (colore)
    {
        Torre* t=nullptr;

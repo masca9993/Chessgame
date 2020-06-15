@@ -1,6 +1,6 @@
 #ifndef PEZZI_H
 #define PEZZI_H
-#include <vector>
+#include "vector.h"
 #include "scacchiera.h"
 #include "Mossa_illegale.h"
 #include "Mossa_Imposs.h"
@@ -13,7 +13,7 @@ public:
     virtual void setPosizione(int p);
     virtual ~Pezzi();
     virtual Pezzi* clone() const =0;
-    virtual std::vector<int> move() const =0;
+    virtual vector<int> move() const =0;
     void setParent(Scacchiera* s);
 protected:
     bool colore;

@@ -3,9 +3,9 @@
 Cavallo::Cavallo(bool c, int p, Scacchiera* parent) : Pezzi(c, p, parent)
 {}
 
-std::vector<int> Cavallo::move() const
+vector<int> Cavallo::move() const
 {
-    std::vector<int> mossepossibili;
+    vector<int> mossepossibili;
     if (colore)
     {
         if (pos/8<=5)  //considero i due passi verso l'alto
