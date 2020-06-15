@@ -3,9 +3,9 @@
 Mosseax::Mosseax(bool c, int p, Scacchiera *parent): Pezzi(c, p, parent){}
 
 
-std::vector<int> Mosseax::move() const
+vector<int> Mosseax::move() const
 {
-    std::vector<int> mossepossibili;
+    svector<int> mossepossibili;
     if(colore){
         int i=pos+7;
         int limitesuperiore=8-pos/8;

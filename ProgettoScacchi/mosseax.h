@@ -6,7 +6,7 @@ class Mosseax : virtual public Pezzi
 {
 public:
     Mosseax(bool c, int p, Scacchiera* parent);
-    virtual std::vector<int> move() const;
+    virtual vector<int> move() const;
 };
 
 

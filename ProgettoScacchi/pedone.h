@@ -7,9 +7,9 @@ class Pedone: public Pezzi
 {
 public:
     Pedone(bool c,int p, Scacchiera* parent, bool f=false, bool b =false);
-    std::vector<int> move() const;
+    vector<int> move() const;
     Pedone* clone() const;
-    std::vector<int> enpassant() const;
+    vector<int> enpassant() const;
     void setpass(bool c) ;
     void setPosizione(int p);
 private:

@@ -5,11 +5,12 @@ Regina::Regina(bool c, int p, Scacchiera* parent) :Pezzi(c,p,parent),mosseacroce
 
 }
 
-std::vector<int> Regina::move() const
+vector<int> Regina::move() const
 {
-    std::vector<int> mossepossibili=mosseacroce::move();
-    std::vector<int> mossealfiere=Mosseax::move();
-    mossepossibili.insert(mossepossibili.begin(),mossealfiere.begin(),mossealfiere.end());
+    vector<int> mossepossibili=mosseacroce::move();
+    vector<int> mossealfiere=Mosseax::move();
+    //mossepossibili.insert(mossepossibili.begin(),mossealfiere.begin(),mossealfiere.end());
+    mossepossibili=mssepossibili+mossealfiere;
     return mossepossibili;
 }
 

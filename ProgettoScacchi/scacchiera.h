@@ -1,6 +1,6 @@
 #ifndef SCACCHIERA_H
 #define SCACCHIERA_H
-#include <vector>
+#include "vector.h"
 #include<iostream>
 class Pezzi;
 enum giocatore{none = 0, nero =1, bianco =2};
@@ -19,12 +19,16 @@ public:
     bool W(bool p) const;  // p è il colore del re di cui si vuole controllare lo scacco
     void doMove(int pos1, int pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
 private:
-    std::vector<Pezzi*> board;
+    static int caselle;
+    vector<Pezzi*> board;
     bool turn;   //false=turno del nero, true bianco
-    std::vector<int> Mosse(bool g) const;
+    vector<int> Mosse(bool g) const;
     void Arrocco(int pos1, int pos2);
+    void Enpassant(int pos1, int pos2);
     void cambiaturno(int posf);
 };
+
+int Scacchiera::caselle=63;
 
 #endif // SCACCHIERA_H
 

@@ -2,9 +2,9 @@
 
 Pedone::Pedone(bool c,int p, Scacchiera* parent, bool f, bool b) : Pezzi(c,p, parent), firstmove(f), pass(b) {}
 
-std::vector<int> Pedone::move() const
+vector<int> Pedone::move() const
 {
-    std::vector<int> mossepossibili;
+    vector<int> mossepossibili;
     //sx e dx guardando il pedone
     if(colore){//se il colore Ăš bianco sommo, e la mossa +7 va in diagonale a sinistra, mentre, +9 va in diagonale a destra
         if(pos<56){
@@ -35,8 +35,9 @@ std::vector<int> Pedone::move() const
                     mossepossibili.push_back(pos-9);
         }
     }
-    std::vector<int> v=enpassant();
-    mossepossibili.insert(mossepossibili.end(),v.begin(),v.end()); //devo modificare con + (mossepossibili=mossepossibili+v)
+    vector<int> v=enpassant();
+    //mossepossibili.insert(mossepossibili.end(),v.begin(),v.end()); //devo modificare con + (mossepossibili=mossepossibili+v)
+    mossepossibili=mossepossibili+v;
     return mossepossibili;
 }
 
@@ -47,9 +48,9 @@ Pedone *Pedone::clone() const
 }
 
 
-std::vector<int> Pedone::enpassant() const
+vector<int> Pedone::enpassant() const
 {
-    std::vector<int> mosse;
+    vector<int> mosse;
     if(colore){                         //en passant colore bianco
         if(pos/8==4 && (pos%8)!=0 && parent->getStato(pos+9)==none){   //en passant a sinistra
             Pedone* p=dynamic_cast<Pedone*>(parent->getPedina(pos-1));

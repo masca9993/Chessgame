@@ -8,7 +8,7 @@ class Regina : public mosseacroce , public Mosseax
 {
 public:
     Regina(bool c, int p, Scacchiera* parent);
-    std::vector<int> move() const;
+    vector<int> move() const;
     Regina* clone() const;
 };
 
