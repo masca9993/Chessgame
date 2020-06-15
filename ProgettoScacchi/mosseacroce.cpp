@@ -2,9 +2,9 @@
 
 mosseacroce::mosseacroce(bool c, int p, Scacchiera *parent): Pezzi(c,p,parent){}
 
-std::vector<int> mosseacroce::move() const
+vector<int> mosseacroce::move() const
 {
-    std::vector<int> mossepossibili;
+   vector<int> mossepossibili;
     if (colore)
     {
     for (int i=1; i<8-pos/8; i++)  //aggiungo le mossepossibili in verticale verso l'alto, pezzo bianco
