@@ -6,12 +6,12 @@
 class Re : public Pezzi
 {
 public:
-    Re(bool c, int p, Scacchiera* parent, bool ch=false, bool m=false);
+    Re(const bool& c,const int& p, Scacchiera* parent,const bool& ch=false,const bool& m=false);
     vector<int> move() const;
     bool hasmoved() const;
     bool check=false;
     Re* clone() const;
-   void setPosizione(int p);
+   void setPosizione(const int& p);
     vector<int> MoveArrocco() const;
     private:
     bool moved=false;

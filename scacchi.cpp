@@ -26,7 +26,7 @@ Scacchi::~Scacchi()
 
 }
 
-QLayoutItem *Scacchi::getBoardItem(int pos) const
+QLayoutItem *Scacchi::getBoardItem(const int & pos) const
 {
     return gridlayout->itemAtPosition(pos/8, pos%8);
 }

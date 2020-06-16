@@ -6,7 +6,7 @@
 class Cavallo : public Pezzi
 {
 public:
-    Cavallo(bool c, int p, Scacchiera* parent);
+    Cavallo(const bool& c, const int& p, Scacchiera* parent);
      vector<int> move() const;
      Cavallo* clone() const;
 };

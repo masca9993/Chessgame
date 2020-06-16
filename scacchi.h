@@ -22,7 +22,7 @@ class Scacchi : public QWidget
 public:
     Scacchi(Controller* p,QWidget *parent = nullptr);
     ~Scacchi();
-    QLayoutItem* getBoardItem(int pos) const;
+    QLayoutItem* getBoardItem(const int& pos) const;
     void reset();
 private:
     Controller* controller;

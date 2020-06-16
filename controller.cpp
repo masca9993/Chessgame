@@ -18,7 +18,7 @@ void Controller::setView(Scacchi *s)
     vista=s;
 }
 
-void Controller::ColoraMuovi(int r, int pos) const
+void Controller::ColoraMuovi(const int& r,const int& pos) const
 {
     cancellamosse();
     if (r==-1)
@@ -27,7 +27,7 @@ void Controller::ColoraMuovi(int r, int pos) const
         EseguiMossa(r, pos);
 }
 
-void Controller::EseguiPromozione(char t, int p) const
+void Controller::EseguiPromozione(const char& t,const int& p) const
 {
     QPushButton* f=static_cast<QPushButton*>(vista->getBoardItem(56-(p/8)*8+p%8)->widget());
     if (!scacchiera->getTurn())
@@ -63,11 +63,10 @@ void Controller::EseguiPromozione(char t, int p) const
 void Controller::reset()
 {
     vista->reset();
-    delete scacchiera;
-    scacchiera=new Scacchiera();
+    scacchiera->reset();
 }
 
-void Controller::vedimosse(int pos) const
+void Controller::vedimosse(const int& pos) const
 {
     if(scacchiera->getTurn()==scacchiera->getStato(pos)-1){
         Pezzi* p=scacchiera->getPedina(pos);
@@ -84,7 +83,7 @@ void Controller::vedimosse(int pos) const
     }
 }
 
-void Controller::AggiornaIcone(int posi, int posf) const
+void Controller::AggiornaIcone(const int& posi, const int& posf) const
 {
     QPushButton* i=static_cast<QPushButton*>(vista->getBoardItem(56-(posi/8)*8+posi%8)->widget());
     QPushButton* f=static_cast<QPushButton*>(vista->getBoardItem(56-(posf/8)*8+posf%8)->widget());
@@ -92,7 +91,7 @@ void Controller::AggiornaIcone(int posi, int posf) const
     i->setIcon(QIcon(" "));
 }
 
-void Controller::EseguiMossa(int posi, int posf) const
+void Controller::EseguiMossa(const int& posi, const int& posf) const
 {
         try
     {

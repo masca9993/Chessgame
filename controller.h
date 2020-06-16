@@ -13,16 +13,16 @@ public:
     void move();
     void setView(Scacchi* s);
 public slots:
- void ColoraMuovi(int r, int pos) const;
- void EseguiPromozione(char t, int p) const;
+ void ColoraMuovi(const int& r,const int& pos) const;
+ void EseguiPromozione(const char& t, const int& p) const;
  void reset();
 private:
     Scacchiera* scacchiera;
     Scacchi* vista;
     void cancellamosse() const;
-    void vedimosse(int pos) const;
-    void AggiornaIcone(int posi, int posf) const;
-    void EseguiMossa(int posi, int posf) const;
+    void vedimosse(const int& pos) const;
+    void AggiornaIcone(const int& posi, const int& posf) const;
+    void EseguiMossa(const int& posi,const int& posf) const;
     void mostravincitore() const;
 };
 

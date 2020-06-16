@@ -1,12 +1,12 @@
 #include "pezzi.h"
-Pezzi::Pezzi(bool c,int p, Scacchiera* g): colore(c) , pos(p), parent(g) {}
+Pezzi::Pezzi(const bool& c,const int& p, Scacchiera* g): colore(c) , pos(p), parent(g) {}
 
 bool Pezzi::getColore() const
 {
     return colore;
 }
 
-void Pezzi::setPosizione(int p)
+void Pezzi::setPosizione(const int& p)
 {
     pos=p;
 }

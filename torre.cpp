@@ -1,6 +1,6 @@
 #include "torre.h"
 
-Torre::Torre(bool c, int p, Scacchiera* parent, bool m) : Pezzi(c,p,parent), mosseacroce(c, p, parent), moved(m)
+Torre::Torre(const bool& c, const int& p, Scacchiera* parent, const bool &m) : Pezzi(c,p,parent), mosseacroce(c, p, parent), moved(m)
 {}
 
 bool Torre::hasmoved() const
@@ -13,7 +13,7 @@ Torre *Torre::clone() const
     return new Torre(*this);
 }
 
-void Torre::setPosizione(int p)
+void Torre::setPosizione(const int& p)
 {
     pos=p;
     if (!moved)

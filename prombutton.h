@@ -6,7 +6,7 @@ class PromButton : public QPushButton
 {
     Q_OBJECT
 public:
-    PromButton(char t, int p, QWidget* parent=nullptr);
+    PromButton(const char& t,const int& p, QWidget* parent=nullptr);
 private:
     char tipo;
     int pos;
