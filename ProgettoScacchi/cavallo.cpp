@@ -1,6 +1,6 @@
 #include "cavallo.h"
 
-Cavallo::Cavallo(bool c, int p, Scacchiera* parent) : Pezzi(c, p, parent)
+Cavallo::Cavallo(const bool& c,const int& p, Scacchiera* parent) : Pezzi(c, p, parent)
 {}
 
 vector<int> Cavallo::move() const

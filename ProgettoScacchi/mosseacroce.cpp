@@ -1,6 +1,6 @@
 #include "mosseacroce.h"
 
-mosseacroce::mosseacroce(bool c, int p, Scacchiera *parent): Pezzi(c,p,parent){}
+mosseacroce::mosseacroce(const bool& c, const int & p, Scacchiera *parent): Pezzi(c,p,parent){}
 
 vector<int> mosseacroce::move() const
 {

@@ -1,6 +1,6 @@
 #include "re.h"
 #include "torre.h"
-Re::Re(bool c, int p, Scacchiera* parent, bool ch, bool m) : Pezzi(c, p, parent), check(ch), moved(m)
+Re::Re(const bool& c,const int& p, Scacchiera* parent, const bool& ch,const bool& m) : Pezzi(c, p, parent), check(ch), moved(m)
 {}
 
 vector<int> Re::move() const
@@ -258,7 +258,7 @@ Re *Re::clone() const
 }
 
 
-void Re::setPosizione(int p)
+void Re::setPosizione(const int& p)
 {
     pos=p;
     if(!moved)

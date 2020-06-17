@@ -6,10 +6,10 @@
 class Torre : public mosseacroce
 {
 public:
-    Torre(bool c, int p, Scacchiera* parent, bool m=false);
+    Torre(const bool& c,const int& p, Scacchiera* parent, const bool& m=false);
     bool hasmoved() const;
     Torre* clone() const;
-    void setPosizione(int p);
+    void setPosizione(const int& p);
 private:
     bool moved;
 };

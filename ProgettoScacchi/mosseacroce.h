@@ -5,7 +5,7 @@
 class mosseacroce: virtual public Pezzi
 {
 public:
-    mosseacroce(bool c, int p, Scacchiera* parent);
+    mosseacroce(const bool& c,const int& p, Scacchiera* parent);
     virtual vector<int> move() const;
 };
 

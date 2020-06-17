@@ -7,10 +7,10 @@
 class Pezzi
 {
 public:
-     Pezzi(bool c,int p, Scacchiera* g =nullptr);
+     Pezzi(const bool& c,const int& p, Scacchiera* g =nullptr);
     bool getColore() const;// 1=bianco; 0=nero;
     int getPosizione() const;
-    virtual void setPosizione(int p);
+    virtual void setPosizione(const int& p);
     virtual ~Pezzi();
     virtual Pezzi* clone() const =0;
     virtual vector<int> move() const =0;

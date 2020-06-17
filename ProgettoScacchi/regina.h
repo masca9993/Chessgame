@@ -7,7 +7,7 @@
 class Regina : public mosseacroce , public Mosseax
 {
 public:
-    Regina(bool c, int p, Scacchiera* parent);
+    Regina(const bool& c,const int& p, Scacchiera* parent);
     vector<int> move() const;
     Regina* clone() const;
 };

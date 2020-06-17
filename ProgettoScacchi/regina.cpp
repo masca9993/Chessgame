@@ -1,6 +1,6 @@
 #include "regina.h"
 
-Regina::Regina(bool c, int p, Scacchiera* parent) :Pezzi(c,p,parent),mosseacroce(c,p,parent), Mosseax(c,p,parent)
+Regina::Regina(const bool& c, const int& p, Scacchiera* parent) :Pezzi(c,p,parent),mosseacroce(c,p,parent), Mosseax(c,p,parent)
 {
 
 }

@@ -1,6 +1,6 @@
 #include "mosseax.h"
 
-Mosseax::Mosseax(bool c, int p, Scacchiera *parent): Pezzi(c, p, parent){}
+Mosseax::Mosseax(const bool& c, const int& p, Scacchiera *parent): Pezzi(c, p, parent){}
 
 
 vector<int> Mosseax::move() const

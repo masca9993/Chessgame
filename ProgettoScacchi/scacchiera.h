@@ -8,15 +8,16 @@ enum giocatore{none = 0, nero =1, bianco =2};
 class Scacchiera
 {
 public:
-    Scacchiera(bool t=true);
+    Scacchiera(const bool& t=true);
     Scacchiera(const Scacchiera& s);
     bool getTurn() const;
-    giocatore getStato(int pos) const;  //ritorna se nella posizione 'pos' la casella è libera oppure è occupata da un giocatore bianco o nero
-    Pezzi* getPedina(int pos) const;  //ritorna un puntatore al pezzo che risiede nela casella pos
+    giocatore getStato(const int& pos) const;  //ritorna se nella posizione 'pos' la casella è libera oppure è occupata da un giocatore bianco o nero
+    Pezzi* getPedina(const int& pos) const;  //ritorna un puntatore al pezzo che risiede nela casella pos
     ~Scacchiera();
     void Promozione(const int& pos, const char& pezzo);
     giocatore Winner(const bool& p);
     bool W(const bool& p) const;  // p è il colore del re di cui si vuole controllare lo scacco
+    void reset();
     void doMove(const int& pos1,const int& pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
 private:
     static int caselle;

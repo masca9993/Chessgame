@@ -7,8 +7,8 @@ class ChessButton : public QPushButton
 {
     Q_OBJECT
 public:
-    ChessButton(int p, QWidget* parent=nullptr,  int r=-1);
-    void setRed(int r) ;
+    ChessButton(const int& p, QWidget* parent=nullptr,const int& r=-1);
+    void setRed(const int& r) ;
 private:
     int pos;
     int red;

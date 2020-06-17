@@ -6,12 +6,12 @@
 class Pedone: public Pezzi
 {
 public:
-    Pedone(bool c,int p, Scacchiera* parent, bool f=false, bool b =false);
+    Pedone(const bool& c,const int& p, Scacchiera* parent,const bool& f=false,const bool& b =false);
     vector<int> move() const;
     Pedone* clone() const;
     vector<int> enpassant() const;
-    void setpass(bool c) ;
-    void setPosizione(int p);
+    void setpass(const bool& c) ;
+    void setPosizione(const int& p);
 private:
     bool firstmove;  //prima mossa del pedone
     bool pass;  //viene inpostata a true solo quando viene effettuata una mossa di sue caselle, e viene rimessa false quando passa un turno
