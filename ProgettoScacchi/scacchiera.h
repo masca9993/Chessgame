@@ -15,8 +15,6 @@ public:
     Pezzi* getPedina(const int& pos) const;  //ritorna un puntatore al pezzo che risiede nela casella pos
     ~Scacchiera();
     void Promozione(const int& pos, const char& pezzo);
-    giocatore Winner(const bool& p);
-    bool W(const bool& p) const;  // p è il colore del re di cui si vuole controllare lo scacco
     void reset();
     void doMove(const int& pos1,const int& pos2);   //doMove è la funzione che muove le pedine (nel caso di arrocco (cioè re di muove di due passi rispetto alla sua posizione) deve preoccuparsi di muovere anche la torre coinvolta)
 private:
@@ -27,6 +25,8 @@ private:
     void Arrocco(const int& pos1, const int& pos2);
     void Enpassant(const int& pos1, const int& pos2);
     void cambiaturno(const int& posf);
+     giocatore Winner(const bool& p);
+    bool W(const bool& p) const;  // p è il colore del re di cui si vuole controllare lo scacco
 };
 
 

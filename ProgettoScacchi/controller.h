@@ -10,7 +10,6 @@ class Controller : public QObject
     Q_OBJECT
 public:
     Controller(Scacchiera* s,QObject* p =nullptr);
-    void move();
     void setView(Scacchi* s);
 public slots:
  void ColoraMuovi(const int& r,const int& pos) const;
@@ -21,9 +20,7 @@ private:
     Scacchi* vista;
     void cancellamosse() const;
     void vedimosse(const int& pos) const;
-    void AggiornaIcone(const int& posi, const int& posf) const;
     void EseguiMossa(const int& posi,const int& posf) const;
-    void mostravincitore() const;
 };
 
 #endif // CONTROLLER_H

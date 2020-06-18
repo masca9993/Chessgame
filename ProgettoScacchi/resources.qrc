@@ -18,5 +18,6 @@
         <file>styleBlack.css</file>
         <file>styleWhithe.css</file>
         <file>styleselected.css</file>
+        <file>styleWhite.css</file>
     </qresource>
 </RCC>

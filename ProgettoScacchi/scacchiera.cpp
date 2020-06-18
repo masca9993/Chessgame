@@ -44,7 +44,6 @@ Scacchiera::Scacchiera(const Scacchiera &s) : board(caselle,nullptr)
 {
     for (vector<Pezzi*>::iterator it=s.board.begin(); it!=s.board.end(); it++)
     {
-        //board.push_back(nullptr);    //inizializzo ogni casella a nullptr
         if (*it)     // se nella scacchiera da copiare allora copio lo stesso pezzo in this
         {
             board[(*it)->getPosizione()]=(*it)->clone();
@@ -150,7 +149,7 @@ vector<int> Scacchiera::Mosse(const bool& g) const
 
 void Scacchiera::Arrocco(const int& pos1, const int& pos2)
 {
-      if (pos1==4)       //re bianco
+      if (pos1==4 && !W(1))       //re bianco
       {
         if (pos2==2)     //arrocco lungo
         {
@@ -208,7 +207,7 @@ void Scacchiera::Arrocco(const int& pos1, const int& pos2)
             }
         }
       }
-      else if (pos1==60)
+      else if (pos1==60 && !W(0))
       {
           if (pos2==58)     //arrocco lungo
           {
@@ -266,7 +265,7 @@ void Scacchiera::Arrocco(const int& pos1, const int& pos2)
           }
       }
       else
-          throw Mossa_Imposs();
+          throw Mossa_illegale();
 }
 
 
@@ -341,7 +340,6 @@ void Scacchiera::cambiaturno(const int& posf)
         if (typeid(*board[posf])==typeid(Pedone) && posf<=7)
             throw promozione();
     }
-    std::cout<<"1";
     if (W(turn))
     {
         if(Winner(turn)!=none)
@@ -367,7 +365,6 @@ giocatore Scacchiera::Winner(const bool& p)   //ipotizzo che il re sia sottoscac
         prova->board[it]=nullptr;
         prova->board[*i]->setPosizione(*i);
          if(!prova->W(p)){
-            std::cout<<it<<"  "<<*i;
             delete prova;
              return none;
          }
@@ -462,4 +459,3 @@ void Scacchiera::doMove(const int& pos1,const int& pos2)
 }
         throw Mossa_Imposs();
 }
-
