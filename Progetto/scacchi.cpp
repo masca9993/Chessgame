@@ -149,9 +149,9 @@ void Scacchi::reset()
         static_cast<QPushButton*>(getBoardItem(i)->widget())->setEnabled(true);
 }
 
-void Scacchi::finestrapromozione(bool k, int posf) const
+void Scacchi::finestrapromozione(bool k, int posf)
 {
-    QDialog* finestra=new QDialog();
+    QDialog* finestra=new QDialog(this);
     QVBoxLayout* l=new QVBoxLayout(finestra);
     finestra->setMinimumSize(QSize(80, 80));
     if (k)               //tocca al bianco
@@ -293,9 +293,9 @@ void Scacchi::Promozione(const char& t, const int& p,const bool& k) const {
     }
 }
 
-void Scacchi::mostravincitore(const bool& k) const
+void Scacchi::mostravincitore(const bool& k)
 {
-    QDialog* finestra=new QDialog();
+    QDialog* finestra=new QDialog(this);
     QVBoxLayout* l=new QVBoxLayout(finestra);
     finestra->setMinimumSize(QSize(80, 80));
     if (k)
@@ -313,9 +313,9 @@ void Scacchi::eliminapedina(const int &p) const
     t->setIcon(QIcon(" "));
 }
 
-void Scacchi::finestraeccezioni(QLabel* p) const
+void Scacchi::finestraeccezioni(QLabel* p)
 {
-    QDialog* finestra=new QDialog();
+    QDialog* finestra=new QDialog(this);
     QVBoxLayout* l=new QVBoxLayout(finestra);
     l->addWidget(p);
     finestra->show();

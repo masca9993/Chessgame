@@ -27,14 +27,14 @@ public:
     Scacchi(Controller* p,QWidget *parent = nullptr);
     QLayoutItem* getBoardItem(const int& pos) const;
     void reset();
-    void finestrapromozione(bool k, int posf) const;
+    void finestrapromozione(bool k, int posf);
     void cancellamosse() const;
     void colora(vector<int> v,const int& pos) const;
     void AggiornaIcone(const int& posi, const int& posf) const;
     void Promozione(const char& t, const int& p,const bool& k) const;
-    void mostravincitore(const bool& k) const;
+    void mostravincitore(const bool& k);
     void eliminapedina(const int& p) const;
-    void finestraeccezioni(QLabel* p) const;
+    void finestraeccezioni(QLabel* p);
 private:
     Controller* controller;
     QVBoxLayout* mainlayout;
