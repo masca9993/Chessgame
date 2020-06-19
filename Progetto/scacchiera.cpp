@@ -83,7 +83,7 @@ Scacchiera::~Scacchiera()
 
 bool Scacchiera::W(const bool& p) const  //funzione che verifica se c'è uno scacco al giocatore p
 {
-    int re_pos;
+  int re_pos=-1;
   for (vector<Pezzi*>::const_iterator it=board.begin(); it!=board.end();it++)
   {
      if (*it && (*it)->getColore()==p && dynamic_cast<Re*>(*it)!=nullptr)  //cerco il re
